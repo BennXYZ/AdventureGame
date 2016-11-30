@@ -10,7 +10,7 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 
-namespace LoadXML
+namespace FantasyGame
 {
     static class ContentManager
     {
