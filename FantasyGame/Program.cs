@@ -23,6 +23,17 @@ namespace FantasyGame
 
             while(true)
             {
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Down))
+                    view.Center = new Vector2f(view.Center.X, view.Center.Y + 5);
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Up))
+                    view.Center = new Vector2f(view.Center.X, view.Center.Y - 5);
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Left))
+                    view.Center = new Vector2f(view.Center.X - 5, view.Center.Y);
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Right))
+                    view.Center = new Vector2f(view.Center.X + 5, view.Center.Y);
+
+                window.SetView(view);
+
                 window.Clear();
 
                 map.Draw(window,view);
