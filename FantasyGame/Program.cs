@@ -14,7 +14,6 @@ namespace FantasyGame
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("lol");
         }
     }
 }
