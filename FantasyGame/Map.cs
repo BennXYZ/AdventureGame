@@ -15,12 +15,12 @@ namespace FantasyGame
     [XmlRoot("map")]
     public class Map
     {
-        #region Methods
+        #region PublicMethods
 
         /// <summary>
         /// Only for XML. Use the other initializing-Method.
         /// </summary>
-        public Map()
+        private Map()
         {}
 
         /// <summary>
@@ -42,51 +42,7 @@ namespace FantasyGame
             tilesets = map.tilesets;
 
             AddTiles();
-        }
-
-        /// <summary>
-        /// Initializing-Logic
-        /// </summary>
-        private void AddTiles()
-        {
-            Tiles = new List<int[,]>();
-            spriteMap = new List<int>();
-
-            for (int s = 0; s < ContentManager.spriteMaps.Count; s++)
-            {
-                for (int t = 0; t < tilesets.Length; t++)
-                {
-                    if (ContentManager.spriteMaps[s].name == tilesets[t].name)
-                        spriteMap.Add(s);
-                }
-            }
-
-            for (int i = 0; i < layers.Length; i++)
-            {
-                Tiles.Add(CreateTiles(i));
-            }
-        }
-
-        /// <summary>
-        /// Returns a 2D-Array with the int ID's of the Tiles
-        /// </summary>
-        /// <param name="layer">The Layer of the wanted Tiles</param>
-        private int[,] CreateTiles(int layer)
-        {
-            int[,] tiles = new int[width, height]; ;
-            for (int y = 0; y < height+1; y++)
-            {
-                string line = layers[layer].tileString.Split('\n')[y];
-                for (int x = 0; x < width; x++)
-                {
-                    if (y > 0)
-                    {
-                        int id = Convert.ToInt32(line.Split(',')[x]);
-                        tiles[x, y - 1] = id;
-                    }
-                }
-            }
-            return tiles;
+            CreateCollisions();
         }
 
         /// <summary>
@@ -95,6 +51,11 @@ namespace FantasyGame
         public int[,] GetTiles(int layer)
         {
             return Tiles[layer];
+        }
+
+        public List<FloatRect> GetRectangles()
+        {
+            return collisions;
         }
 
         /// <summary>
@@ -128,6 +89,55 @@ namespace FantasyGame
             }
         }
 
+        #endregion
+
+        #region PrivateMethods
+
+        /// <summary>
+        /// Initializing-Logic
+        /// </summary>
+        private void AddTiles()
+        {
+            Tiles = new List<int[,]>();
+            spriteMap = new List<int>();
+
+            for (int s = 0; s < ContentManager.spriteMaps.Count; s++)
+            {
+                for (int t = 0; t < tilesets.Length; t++)
+                {
+                    if (ContentManager.spriteMaps[s].name == tilesets[t].name)
+                        spriteMap.Add(s);
+                }
+            }
+
+            for (int i = 0; i < layers.Length; i++)
+            {
+                Tiles.Add(CreateTiles(i));
+            }
+        }
+
+        /// <summary>
+        /// Returns a 2D-Array with the int ID's of the Tiles
+        /// </summary>
+        /// <param name="layer">The Layer of the wanted Tiles</param>
+        private int[,] CreateTiles(int layer)
+        {
+            int[,] tiles = new int[width, height]; ;
+            for (int y = 0; y < height + 1; y++)
+            {
+                string line = layers[layer].tileString.Split('\n')[y];
+                for (int x = 0; x < width; x++)
+                {
+                    if (y > 0)
+                    {
+                        int id = Convert.ToInt32(line.Split(',')[x]);
+                        tiles[x, y - 1] = id;
+                    }
+                }
+            }
+            return tiles;
+        }
+
         private int GetTexture(int tile)
         {
             for (int r = 0; r < tilesets.Length - 1; r++) // geht alle Tilesets durch
@@ -137,7 +147,6 @@ namespace FantasyGame
             }
             return (tilesets.Length - 1);
         }
-
 
         /// <summary>
         /// Gets the wanted Spritemap. Necesary so that you don't have to put the spritemaps in order
@@ -152,9 +161,37 @@ namespace FantasyGame
             throw new FileNotFoundException("There is no Spritemap with the same name as the tilesets");
         }
 
+        /// <summary>
+        /// Turns collidable Tiles and manually creates Objects into Rectangles
+        /// </summary>
+        private void CreateCollisions()
+        {
+            collisions = new List<FloatRect>();
+
+            for (int i = 0; i < objectgroups.Length; i++)
+            {
+                for (int r = 0; r < objectgroups[i].rectangles.Length; r++)
+                {
+                    collisions.Add(new FloatRect(objectgroups[i].rectangles[r].x, objectgroups[i].rectangles[r].y, objectgroups[i].rectangles[r].width, objectgroups[i].rectangles[r].height));
+                }
+            }
+
+            for(int l = 0; l < Tiles.Count; l++)
+                for (int x = 0; x < Tiles[l].GetLength(0); x++)
+                    for (int y = 0; y < Tiles[l].GetLength(1); y++)
+                        for (int t = 0; t < tilesets.Length; t++)
+                            for (int r = 0; r < tilesets[t].collTiles.Length; r++)
+                            {
+                            if (Tiles[l][x, y] == (Convert.ToInt32(tilesets[t].collTiles[r].Id) + 1))
+                                collisions.Add(new FloatRect(x * tilewidth, y * tileheight, tilewidth, tileheight));
+                        }
+        }
+
         #endregion
 
         #region Variables
+
+        List<FloatRect> collisions;
 
         List<int> spriteMap;
 
@@ -195,6 +232,8 @@ namespace FantasyGame
             set;
         }
 
+
+
         [XmlElement("objectgroup")]
         public ObjectGroup[] objectgroups
         {
@@ -210,6 +249,16 @@ namespace FantasyGame
         }
 
         #endregion
+    }
+
+    public class Tile
+    {
+        [XmlAttribute("id")]
+        public string Id
+        {
+            get;
+            set;
+        }
     }
 
     public class Layer
@@ -257,6 +306,13 @@ namespace FantasyGame
 
         [XmlAttribute("firstgid")]
         public int firstgid
+        {
+            get;
+            set;
+        }
+
+        [XmlElement("tile")]
+        public Tile[] collTiles
         {
             get;
             set;

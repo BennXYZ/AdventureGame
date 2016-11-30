@@ -16,8 +16,19 @@ namespace FantasyGame
         {
             RenderWindow window = new RenderWindow(new VideoMode(1280, 720), "lol");
             View view = new View(new Vector2f(0, 0), new Vector2f(1280, 720));
-            
 
+            ContentManager.spriteMaps.Add(new SpriteMap(0, "LpYEB", "LpYEB.png", 16, 16));
+
+            Map map = new Map("stuff.tmx");
+
+            while(true)
+            {
+                window.Clear();
+
+                map.Draw(window,view);
+
+                window.Display();
+            }
 
 
         }
