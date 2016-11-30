@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animation.cs" />
     <Compile Include="ContentManager.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Program.cs" />
