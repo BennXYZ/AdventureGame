@@ -1,1 +1,2 @@
 C:\Users\Benedikt\Documents\Github\FantasyGame\FantasyGame\bin\Debug\FantasyGame.exe.config
+C:\Users\Benedikt\Documents\Github\AdventureGame\FantasyGame\bin\Debug\FantasyGame.exe.config
