@@ -17,6 +17,9 @@ namespace FantasyGame
     {
         #region Methods
 
+        /// <summary>
+        /// Only for XML. Use the other initializing-Method.
+        /// </summary>
         public Map()
         {}
 
@@ -115,25 +118,38 @@ namespace FantasyGame
                     {
                         if (-1 < x && x < width && -1 < y && y < height)
                         {
-                            int currentSpriteMap = 0;
                             for (int r = 0; r < tilesets.Length; r++)
-                                if (Tiles[i][x, y] >= tilesets[r].firstgid)
-                                    currentSpriteMap = r;
 
-                            ContentManager.spriteMaps[spriteMap[currentSpriteMap]].Sprites[Tiles[i][x, y] - (tilesets[currentSpriteMap].firstgid - 1)].Position = new Vector2f(x * tilewidth, y * tileheight);
-                            window.Draw(ContentManager.spriteMaps[spriteMap[currentSpriteMap]].Sprites[Tiles[i][x,y] - (tilesets[currentSpriteMap].firstgid - 1)]);
+                            ContentManager.spriteMaps[spriteMap[GetSpritemap(Tiles[i][x, y])]].Sprites[Tiles[i][x, y] - (tilesets[GetTexture(Tiles[i][x, y])].firstgid - 1)].Position = new Vector2f(x * tilewidth, y * tileheight);
+                            window.Draw(ContentManager.spriteMaps[spriteMap[GetSpritemap(Tiles[i][x, y])]].Sprites[Tiles[i][x,y] - (tilesets[GetTexture(Tiles[i][x, y])].firstgid - 1)]);
                         }
-
                     }
                 }
             }
         }
 
+        private int GetTexture(int tile)
+        {
+            for (int r = 0; r < tilesets.Length - 1; r++) // geht alle Tilesets durch
+            {
+                if (tile < tilesets[r + 1].firstgid)    //bricht ab wenn das passende Tileset gefunden wurde
+                    return r;
+            }
+            return (tilesets.Length - 1);
+        }
+
+
+        /// <summary>
+        /// Gets the wanted Spritemap. Necesary so that you don't have to put the spritemaps in order
+        /// </summary>
         private int GetSpritemap(int tile)
         {
-            string lol;
-
-            return 0;
+            for (int r = 0; r < ContentManager.spriteMaps.Count; r++)
+            {
+                if (tilesets[GetTexture(tile)].name == ContentManager.spriteMaps[r].name)
+                    return r;
+            }
+            throw new FileNotFoundException("There is no Spritemap with the same name as the tilesets");
         }
 
         #endregion

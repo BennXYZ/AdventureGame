@@ -14,7 +14,12 @@ namespace FantasyGame
     {
         static void Main(string[] args)
         {
+            RenderWindow window = new RenderWindow(new VideoMode(1280, 720), "lol");
+            View view = new View(new Vector2f(0, 0), new Vector2f(1280, 720));
             
+
+
+
         }
     }
 }
