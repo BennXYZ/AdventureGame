@@ -50,7 +50,7 @@ namespace FantasyGame
         /// </summary>
         public int[,] GetTiles(int layer)
         {
-            return Tiles[layer];
+            return tileLayers[layer];
         }
 
         public List<FloatRect> GetRectangles()
@@ -71,7 +71,7 @@ namespace FantasyGame
         /// </summary>
         public void Draw(RenderWindow window, View view)
         {
-            for (int i = 0; i < Tiles.Count ; i++)
+            for (int i = 0; i < tileLayers.Count ; i++)
             {
                 for (int y = ((int)(view.Center.Y - (view.Size.Y / 2)) / tileheight); y < ((int)(view.Center.Y + (view.Size.Y / 2)) / 
                     tileheight + 1); y++)
@@ -81,10 +81,10 @@ namespace FantasyGame
                     {
                         if (-1 < x && x < width && -1 < y && y < height)
                         {
-                            ContentManager.spriteMaps[spriteMap[GetSpritemap(Tiles[i][x, y])]].Sprites[Tiles[i][x, y] - 
-                                (tilesets[GetTexture(Tiles[i][x, y])].firstgid - 1)].Position = new Vector2f(x * tilewidth, y * tileheight);
-                            window.Draw(ContentManager.spriteMaps[spriteMap[GetSpritemap(Tiles[i][x, y])]].Sprites[Tiles[i][x,y] - 
-                                (tilesets[GetTexture(Tiles[i][x, y])].firstgid - 1)]);
+                            ContentManager.spriteMaps[spriteMap[GetSpritemap(tileLayers[i][x, y])]].Sprites[tileLayers[i][x, y] - 
+                                (tilesets[GetTexture(tileLayers[i][x, y])].firstgid - 1)].Position = new Vector2f(x * tilewidth, y * tileheight);
+                            window.Draw(ContentManager.spriteMaps[spriteMap[GetSpritemap(tileLayers[i][x, y])]].Sprites[tileLayers[i][x,y] - 
+                                (tilesets[GetTexture(tileLayers[i][x, y])].firstgid - 1)]);
                         }
                     }
                 }
@@ -100,7 +100,7 @@ namespace FantasyGame
         /// </summary>
         private void AddTiles()
         {
-            Tiles = new List<int[,]>();
+            tileLayers = new List<int[,]>();
             spriteMap = new List<int>();
 
             for (int s = 0; s < ContentManager.spriteMaps.Count; s++)
@@ -114,7 +114,7 @@ namespace FantasyGame
 
             for (int i = 0; i < layers.Length; i++)
             {
-                Tiles.Add(CreateTiles(i));
+                tileLayers.Add(CreateTiles(i));
             }
         }
 
@@ -181,14 +181,14 @@ namespace FantasyGame
             }
 
 
-            for (int l = 0; l < Tiles.Count; l++)
-                for (int x = 0; x < Tiles[l].GetLength(0); x++)
-                    for (int y = 0; y < Tiles[l].GetLength(1); y++)
+            for (int l = 0; l < tileLayers.Count; l++)
+                for (int x = 0; x < tileLayers[l].GetLength(0); x++)
+                    for (int y = 0; y < tileLayers[l].GetLength(1); y++)
                         for (int t = 0; t < tilesets.Length; t++)
                             if (tilesets[t].collTiles != null)
                                 for (int r = 0; r < tilesets[t].collTiles.Length; r++)
                                 {
-                                    if (Tiles[l][x, y] == (Convert.ToInt32(tilesets[t].collTiles[r].Id) + 1))
+                                    if (tileLayers[l][x, y] == (Convert.ToInt32(tilesets[t].collTiles[r].Id) + 1))
                                         collisions.Add(new FloatRect(x * tilewidth, y * tileheight, tilewidth, tileheight));
                                 }
         }
@@ -197,12 +197,24 @@ namespace FantasyGame
 
         #region Variables
 
-        List<FloatRect> collisions;
+        /// <summary>
+        /// List of Rectangles that are used for collisions
+        /// </summary>
+        private List<FloatRect> collisions;
 
-        List<int> spriteMap;
+        /// <summary>
+        /// List of
+        /// </summary>
+        private List<int> spriteMap;
 
-        List<int[,]> Tiles;
+        /// <summary>
+        /// List of layers that contain a Tile with X and Y position
+        /// </summary>
+        private List<int[,]> tileLayers;
 
+        /// <summary>
+        /// Total number of Tiles in X-Direction
+        /// </summary>
         [XmlAttribute("width")]
         public int width
         {
@@ -210,6 +222,9 @@ namespace FantasyGame
             set;
         }
 
+        /// <summary>
+        /// Total number of Tiles in Y-Direction
+        /// </summary>
         [XmlAttribute("height")]
         public int height
         {
@@ -217,6 +232,9 @@ namespace FantasyGame
             set;
         }
 
+        /// <summary>
+        /// width of a single tile in Pixel
+        /// </summary>
         [XmlAttribute("tilewidth")]
         public int tilewidth
         {
@@ -224,6 +242,9 @@ namespace FantasyGame
             set;
         }
 
+        /// <summary>
+        /// height of a single tile in Pixel
+        /// </summary>
         [XmlAttribute("tileheight")]
         public int tileheight
         {
@@ -231,6 +252,9 @@ namespace FantasyGame
             set;
         }
 
+        /// <summary>
+        /// layers of Tiles. Mainly used for Initializing. Use "tileLayers" for integers
+        /// </summary>
         [XmlElement("layer")]
         public Layer[] layers
         {
@@ -238,8 +262,9 @@ namespace FantasyGame
             set;
         }
 
-
-
+        /// <summary>
+        /// layers of Objects. Mainly used for Initalizing. Use "collisions" for Rectangles
+        /// </summary>
         [XmlElement("objectgroup")]
         public ObjectGroup[] objectgroups
         {
@@ -247,6 +272,9 @@ namespace FantasyGame
             set;
         }
 
+        /// <summary>
+        /// list of used Tilesets. Has the ID of the first tile within the tileset and a list of IDs, which tiles have collisions
+        /// </summary>
         [XmlElement("tileset")]
         public Tileset[] tilesets
         {
@@ -259,6 +287,9 @@ namespace FantasyGame
 
     public class Tile
     {
+        /// <summary>
+        /// id of the Tile that gets a Collision
+        /// </summary>
         [XmlAttribute("id")]
         public string Id
         {
@@ -269,6 +300,9 @@ namespace FantasyGame
 
     public class Layer
     {
+        /// <summary>
+        /// name of the Layer (derp)
+        /// </summary>
         [XmlAttribute("name")]
         public string name
         {
@@ -276,6 +310,9 @@ namespace FantasyGame
             set;
         }
 
+        /// <summary>
+        /// string of the tiles on the map. Needs to be converted into an int-array
+        /// </summary>
         [XmlElement("data")]
         public string tileString
         {
@@ -286,6 +323,9 @@ namespace FantasyGame
 
     public class ObjectGroup
     {
+        /// <summary>
+        /// name of the objectgroup(derp)
+        /// </summary>
         [XmlAttribute("name")]
         public string name
         {
@@ -293,6 +333,9 @@ namespace FantasyGame
             set;
         }
 
+        /// <summary>
+        /// list of objects within the objectgroup. This is a new class, not an actual Rectangle. Needs to be converted first.
+        /// </summary>
         [XmlElement("object")]
         public Rectangle[] rectangles
         {
@@ -303,6 +346,9 @@ namespace FantasyGame
 
     public class Tileset
     {
+        /// <summary>
+        /// name of the Tileset. Needed so that the map knows which spritemap it has to load
+        /// </summary>
         [XmlAttribute("name")]
         public string name
         {
@@ -310,6 +356,9 @@ namespace FantasyGame
             set;
         }
 
+        /// <summary>
+        /// describes which ID a Tile must have to load this Tileset
+        /// </summary>
         [XmlAttribute("firstgid")]
         public int firstgid
         {
@@ -317,6 +366,9 @@ namespace FantasyGame
             set;
         }
 
+        /// <summary>
+        /// Array of tiles which get collisions. need to be transformed into rectangles
+        /// </summary>
         [XmlElement("tile")]
         public Tile[] collTiles
         {
@@ -327,6 +379,9 @@ namespace FantasyGame
 
     public class Rectangle
     {
+        /// <summary>
+        /// Id of the Rectangle because why nawt?
+        /// </summary>
         [XmlAttribute("id")]
         public int id
         {
