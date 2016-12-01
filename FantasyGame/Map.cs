@@ -13,7 +13,7 @@ using SFML.Window;
 namespace FantasyGame
 {
     [XmlRoot("map")]
-    public class Map
+    public class Map                                    //TODO: Returns beschreiben
     {
         #region PublicMethods
 
@@ -67,22 +67,24 @@ namespace FantasyGame
         }
 
         /// <summary>
-        /// Draws the Map
+        /// Draws the Map           window & view noch beschreiben  ******************
         /// </summary>
         public void Draw(RenderWindow window, View view)
         {
             for (int i = 0; i < Tiles.Count ; i++)
             {
-                for (int y = ((int)(view.Center.Y - (view.Size.Y / 2)) / tileheight); y < ((int)(view.Center.Y + (view.Size.Y / 2)) / tileheight + 1); y++)
+                for (int y = ((int)(view.Center.Y - (view.Size.Y / 2)) / tileheight); y < ((int)(view.Center.Y + (view.Size.Y / 2)) / 
+                    tileheight + 1); y++)
                 {
-                    for (int x = ((int)(view.Center.X- (view.Size.X / 2)) / tilewidth); x < ((int)(view.Center.X + (view.Size.X / 2)) / tilewidth + 1); x++)
+                    for (int x = ((int)(view.Center.X- (view.Size.X / 2)) / tilewidth); x < ((int)(view.Center.X + (view.Size.X / 2)) / 
+                        tilewidth + 1); x++)
                     {
                         if (-1 < x && x < width && -1 < y && y < height)
                         {
-                            for (int r = 0; r < tilesets.Length; r++)
-
-                            ContentManager.spriteMaps[spriteMap[GetSpritemap(Tiles[i][x, y])]].Sprites[Tiles[i][x, y] - (tilesets[GetTexture(Tiles[i][x, y])].firstgid - 1)].Position = new Vector2f(x * tilewidth, y * tileheight);
-                            window.Draw(ContentManager.spriteMaps[spriteMap[GetSpritemap(Tiles[i][x, y])]].Sprites[Tiles[i][x,y] - (tilesets[GetTexture(Tiles[i][x, y])].firstgid - 1)]);
+                            ContentManager.spriteMaps[spriteMap[GetSpritemap(Tiles[i][x, y])]].Sprites[Tiles[i][x, y] - 
+                                (tilesets[GetTexture(Tiles[i][x, y])].firstgid - 1)].Position = new Vector2f(x * tilewidth, y * tileheight);
+                            window.Draw(ContentManager.spriteMaps[spriteMap[GetSpritemap(Tiles[i][x, y])]].Sprites[Tiles[i][x,y] - 
+                                (tilesets[GetTexture(Tiles[i][x, y])].firstgid - 1)]);
                         }
                     }
                 }
@@ -140,7 +142,7 @@ namespace FantasyGame
 
         private int GetTexture(int tile)
         {
-            for (int r = 0; r < tilesets.Length - 1; r++) // geht alle Tilesets durch
+            for (int r = 0; r < tilesets.Length - 1; r++)
             {
                 if (tile < tilesets[r + 1].firstgid)    //bricht ab wenn das passende Tileset gefunden wurde
                     return r;
@@ -149,8 +151,9 @@ namespace FantasyGame
         }
 
         /// <summary>
-        /// Gets the wanted Spritemap. Necesary so that you don't have to put the spritemaps in order
+        /// Gets the wanted Spritemap. Necesary so that you don't have to put the spritemaps in order       tile beschreiben *******
         /// </summary>
+        /// <param name="tile">int ID of the Tile within the map</param>
         private int GetSpritemap(int tile)
         {
             for (int r = 0; r < ContentManager.spriteMaps.Count; r++)
@@ -168,6 +171,7 @@ namespace FantasyGame
         {
             collisions = new List<FloatRect>();
 
+            if (objectgroups != null)
             for (int i = 0; i < objectgroups.Length; i++)
             {
                 for (int r = 0; r < objectgroups[i].rectangles.Length; r++)
@@ -176,15 +180,17 @@ namespace FantasyGame
                 }
             }
 
-            for(int l = 0; l < Tiles.Count; l++)
+
+            for (int l = 0; l < Tiles.Count; l++)
                 for (int x = 0; x < Tiles[l].GetLength(0); x++)
                     for (int y = 0; y < Tiles[l].GetLength(1); y++)
                         for (int t = 0; t < tilesets.Length; t++)
-                            for (int r = 0; r < tilesets[t].collTiles.Length; r++)
-                            {
-                            if (Tiles[l][x, y] == (Convert.ToInt32(tilesets[t].collTiles[r].Id) + 1))
-                                collisions.Add(new FloatRect(x * tilewidth, y * tileheight, tilewidth, tileheight));
-                        }
+                            if (tilesets[t].collTiles != null)
+                                for (int r = 0; r < tilesets[t].collTiles.Length; r++)
+                                {
+                                    if (Tiles[l][x, y] == (Convert.ToInt32(tilesets[t].collTiles[r].Id) + 1))
+                                        collisions.Add(new FloatRect(x * tilewidth, y * tileheight, tilewidth, tileheight));
+                                }
         }
 
         #endregion

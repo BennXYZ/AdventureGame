@@ -20,7 +20,7 @@ namespace FantasyGame
     class SpriteMap
     {
         /// <summary>
-        /// Creates a Spritemap
+        /// Creates a Spritemap                         besser auschreiben **********************
         /// </summary>
         /// <param name="id">Id of the SpriteMap</param>
         /// <param name="name">Name for the SpriteMap</param>
@@ -46,7 +46,8 @@ namespace FantasyGame
                 if (i == 0)
                     Sprites.Add(new Sprite((texture), new IntRect(new Vector2i(0,0), new Vector2i(0,0)))); 
                 else    
-                    Sprites.Add(new Sprite(texture, new IntRect(new Vector2i(((i-1) % width) * tilewidth, ((i - 1) / width) * tileheight), new Vector2i(tilewidth,tileheight))));
+                    Sprites.Add(new Sprite(texture, new IntRect(new Vector2i(((i-1) % width) * tilewidth, ((i - 1) / width) * tileheight), 
+                        new Vector2i(tilewidth,tileheight))));
             }
         }
 

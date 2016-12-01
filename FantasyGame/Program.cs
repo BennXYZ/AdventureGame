@@ -14,16 +14,20 @@ namespace FantasyGame
     {
         static void Main(string[] args)
         {
+            //testing stuff
             int lol = 0;
             RenderWindow window = new RenderWindow(new VideoMode(1280, 720), "lol");
             View view = new View(new Vector2f(0, 0), new Vector2f(1280, 720));
 
-            ContentManager.spriteMaps.Add(new SpriteMap(0, "LpYEB", "LpYEB.png", 16, 16));
+            ContentManager.spriteMaps.Add(new SpriteMap(0, "base_out_atlas", "base_out_atlas.png", 32, 32));
+            ContentManager.spriteMaps.Add(new SpriteMap(0, "terrain_atlas", "terrain_atlas.png", 32, 32));
+            ContentManager.spriteMaps.Add(new SpriteMap(0, "houses", "houses.png", 32, 32));
 
-            Map map = new Map("stuff.tmx");
+            Map map = new Map("fantasieWorld.tmx");
 
             while(true)
             {
+                //Map movement
                 if (Keyboard.IsKeyPressed(Keyboard.Key.Down))
                     view.Center = new Vector2f(view.Center.X, view.Center.Y + 5);
                 if (Keyboard.IsKeyPressed(Keyboard.Key.Up))
