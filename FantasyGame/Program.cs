@@ -14,6 +14,7 @@ namespace FantasyGame
     {
         static void Main(string[] args)
         {
+            int lol = 0;
             RenderWindow window = new RenderWindow(new VideoMode(1280, 720), "lol");
             View view = new View(new Vector2f(0, 0), new Vector2f(1280, 720));
 
@@ -32,6 +33,14 @@ namespace FantasyGame
                 if (Keyboard.IsKeyPressed(Keyboard.Key.Right))
                     view.Center = new Vector2f(view.Center.X + 5, view.Center.Y);
 
+                for (int i = 0; i < map.GetRectangles().Count; i++)
+                    if (map.GetRectangles()[i].Intersects(new FloatRect(new Vector2f(view.Center.X, view.Center.Y), new Vector2f(5, 5))))
+                    {
+                        lol++;
+                        Console.WriteLine(lol);
+                    }
+
+
                 window.SetView(view);
 
                 window.Clear();
@@ -42,6 +51,13 @@ namespace FantasyGame
             }
 
 
+        }
+
+        private void crazyshit(Vector2f position, List<FloatRect> collisions)
+        {
+            for (int i = 0; i < collisions.Count; i++)
+                if (collisions[i].Intersects(new FloatRect(new Vector2f(position.X, position.Y), new Vector2f(5, 5))))
+                    Console.WriteLine("lol");
         }
     }
 }
