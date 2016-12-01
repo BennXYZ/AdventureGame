@@ -44,10 +44,10 @@ namespace FantasyGame
             for (int i = 0; i < (width * height) + 1; i++)
             {  
                 if (i == 0)
-                    Sprites.Add(new Sprite((texture), new IntRect(new Vector2i(0,0), new Vector2i(0,0)))); 
+                    Sprites.Add(new Sprite((texture), new IntRect(new Vector2i(0,0), new Vector2i(0,0)))); //adds an empty tile
                 else    
                     Sprites.Add(new Sprite(texture, new IntRect(new Vector2i(((i-1) % width) * tilewidth, ((i - 1) / width) * tileheight), 
-                        new Vector2i(tilewidth,tileheight))));
+                        new Vector2i(tilewidth,tileheight))));          //turns single tiles of a tileset into seperate sprites
             }
         }
 
