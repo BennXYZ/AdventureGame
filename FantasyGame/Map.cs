@@ -131,7 +131,6 @@ namespace FantasyGame
 
         private int GetSpritemap(int tile)
         {
-            string lol;
 
             return 0;
         }
