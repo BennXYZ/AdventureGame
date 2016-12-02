@@ -181,7 +181,7 @@ namespace FantasyGame
             }
 
 
-            for (int l = 0; l < tileLayers.Count; l++)
+            for (int l = 0; l < tileLayers.Count; l++)              //TODO: Entfernen und einfügen, dass der Spieler nach Tile abfragt
                 for (int x = 0; x < tileLayers[l].GetLength(0); x++)
                     for (int y = 0; y < tileLayers[l].GetLength(1); y++)
                         for (int t = 0; t < tilesets.Length; t++)
