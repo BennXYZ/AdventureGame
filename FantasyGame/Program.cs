@@ -14,8 +14,6 @@ namespace FantasyGame
     {
         static void Main(string[] args)
         {
-
-
             RenderWindow window = new RenderWindow(new VideoMode(1280, 720), "lol");
             window.SetFramerateLimit(60);
             View view = new View(new Vector2f(0, 0), new Vector2f(1280, 720));
@@ -28,6 +26,9 @@ namespace FantasyGame
             ContentManager.spriteMaps.Add(new SpriteMap(0, "houses", "houses.png", 32, 32));
 
             Map map = new Map("fantasieWorld.tmx");
+
+            Animation test = new Animation("terrain_atlas", 5, 120, 2);
+            test.AnimationLoop = false;
 
             while(true)
             {
@@ -49,6 +50,8 @@ namespace FantasyGame
                         Console.WriteLine(lol);
                     }
 
+                test.Update();
+
 
                 window.SetView(view);
 
@@ -56,7 +59,12 @@ namespace FantasyGame
 
                 map.Draw(window,view);
 
+                test.Draw(window);
+
                 window.Display();
+
+                if (test.EndOfAnimation())
+                    window.Close();
             }
 
 

@@ -33,7 +33,6 @@ namespace FantasyGame
         {
             this.id = id;
             this.name = name;
-            int width;
             int height;
             Texture texture = new Texture(fileName);
             Sprites = new List<Sprite>();
@@ -51,6 +50,10 @@ namespace FantasyGame
             }
         }
 
+        /// <summary>
+        /// width describes the amount of Sprites the Spritemap has within one column
+        /// </summary>
+        public int width { get; }
         public int id { get; }
         public string name { get; }
         public List<Sprite> Sprites { get; }
