@@ -1,2 +1,11 @@
 C:\Users\Benedikt\Documents\Github\FantasyGame\FantasyGame\bin\Debug\FantasyGame.exe.config
 C:\Users\Benedikt\Documents\Github\AdventureGame\FantasyGame\bin\Debug\FantasyGame.exe.config
+C:\Users\Benedikt\Documents\Github\AdventureGame\FantasyGame\bin\Debug\FantasyGame.exe
+C:\Users\Benedikt\Documents\Github\AdventureGame\FantasyGame\bin\Debug\FantasyGame.pdb
+C:\Users\Benedikt\Documents\Github\AdventureGame\FantasyGame\bin\Debug\sfmlnet-audio-2.dll
+C:\Users\Benedikt\Documents\Github\AdventureGame\FantasyGame\bin\Debug\sfmlnet-graphics-2.dll
+C:\Users\Benedikt\Documents\Github\AdventureGame\FantasyGame\bin\Debug\sfmlnet-system-2.dll
+C:\Users\Benedikt\Documents\Github\AdventureGame\FantasyGame\bin\Debug\sfmlnet-window-2.dll
+C:\Users\Benedikt\Documents\Github\AdventureGame\FantasyGame\obj\Debug\FantasyGame.csprojResolveAssemblyReference.cache
+C:\Users\Benedikt\Documents\Github\AdventureGame\FantasyGame\obj\Debug\FantasyGame.exe
+C:\Users\Benedikt\Documents\Github\AdventureGame\FantasyGame\obj\Debug\FantasyGame.pdb
