@@ -30,7 +30,7 @@ namespace FantasyGame
             Animation test = new Animation("terrain_atlas", 5, 120, 2);
             test.AnimationLoop = false;
 
-            while(true)
+            while (true)
             {
                 //Map movement
                 if (Keyboard.IsKeyPressed(Keyboard.Key.Down))
@@ -62,9 +62,6 @@ namespace FantasyGame
                 test.Draw(window);
 
                 window.Display();
-
-                if (test.EndOfAnimation())
-                    window.Close();
             }
 
 

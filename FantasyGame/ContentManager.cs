@@ -20,7 +20,7 @@ namespace FantasyGame
     class SpriteMap
     {
         /// <summary>
-        /// Creates a Spritemap                         besser auschreiben **********************
+        /// Creates a Spritemap which contains a Array of Sprites used for Drawing Maps and Animations
         /// </summary>
         /// <param name="id">Id of the SpriteMap</param>
         /// <param name="name">Name for the SpriteMap</param>
