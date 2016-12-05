@@ -19,7 +19,7 @@ namespace FantasyGame
         private Vector2f position;
         private int frameAmount, currentFrame, currentSprite;
         private float size;
-        private bool animationLoop;
+        private bool animationLoop, animationPaused;
 
         public bool AnimationLoop
 
@@ -65,6 +65,7 @@ namespace FantasyGame
 
             spriteIDs = new List<int>();
             Size = 1;
+            animationPaused = false;
 
             spriteMapID = 0;
 
@@ -87,8 +88,19 @@ namespace FantasyGame
         /// </summary>
         public void ResetAnimation()
         {
+            ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[0]].Scale = new Vector2f(size, size);
+
+            ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[0]].Position = new Vector2f(position.X -
+            (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[0]].TextureRect.Width * size) / 2,
+             position.Y - (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[0]].TextureRect.Height * size) / 2);
+
             currentFrame = 0;
             currentSprite = 0;
+        }
+
+        public void PauseAnimation(bool paused)
+        {
+            animationPaused = paused;
         }
 
         private void CurrentSpriteManager()
@@ -112,15 +124,19 @@ namespace FantasyGame
 
         public void Update()
         {
-            CurrentSpriteManager();
+            if (!animationPaused)
+            {
+                CurrentSpriteManager();
 
-            ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].Scale = new Vector2f(size, size);
+                ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].Scale = new Vector2f(size, size);
 
-            ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].Position = new Vector2f(position.X - 
-            (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].TextureRect.Width * size) / 2 , 
-            position.Y - (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].TextureRect.Height * size) / 2);
-            
-            currentFrame++;
+                ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].Position = new Vector2f(position.X -
+                (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].TextureRect.Width * size) / 2,
+                 position.Y - (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].TextureRect.Height * size) / 2);
+
+                currentFrame++;
+            }
+
         }
 
         public void Draw(RenderWindow window)
@@ -134,5 +150,51 @@ namespace FantasyGame
         }
 
         #endregion
+    }
+
+    class Anim
+    {
+        public Anim(Animation animation, int id)
+        {
+            this.animation = animation;
+            this.id = id;
+        }
+
+        private Animation animation;
+        private int id;
+
+        public Animation Animation
+        {
+            get
+            {
+                return animation;
+            }
+
+            set
+            {
+                animation = value;
+            }
+        }
+
+        public int ID
+        {
+            get
+            {
+                return id;
+            }
+
+            set
+            {
+                id = value;
+            }
+        }
+
+        public static Anim GetAnimID(List<Anim> animations, int id)
+        {
+            for (int i = 0; i < animations.Count; i++)
+                if (animations[i].ID == id)
+                    return animations[i];
+            throw new ArgumentOutOfRangeException("No Animation with wanted ID exists");
+        }
     }
 }

@@ -57,7 +57,9 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="Character.cs" />
+    <Compile Include="CollisionMethods.cs" />
     <Compile Include="ContentManager.cs" />
+    <Compile Include="InputManager.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
