@@ -21,7 +21,7 @@ namespace FantasyGame
         private Estates currentState, nextState;
         private bool iFrames, standing;
         private int health;
-        private FloatRect mask, targetMask;
+        private FloatRect mask, targetMask, examinationMask;
         private Vector2f position, velocity, direction;
 
 
@@ -31,14 +31,20 @@ namespace FantasyGame
             this.id = id;
             this.health = health;
             position = startingPosition;
-            mask = new FloatRect(new Vector2f(position.X - size.X / 2, position.Y - size.Y / 2), new Vector2f(size.X, size.Y));
+            mask = new FloatRect(new Vector2f(position.X, position.Y), new Vector2f(size.X, size.Y));
             targetMask = mask;
+            examinationMask = mask;
             currentAnimation = 11;
             velocity = new Vector2f(0, 0);
             direction = new Vector2f(0, 0);
             standing = true;
 
             animations = new List<Anim>();
+            animations.Add(new Anim(new Animation("player", 4, 30, 1), 11));
+            animations.Add(new Anim(new Animation("player", 4, 30, 2), 12));
+            animations.Add(new Anim(new Animation("player", 4, 30, 3), 13));
+            animations.Add(new Anim(new Animation("player", 4, 30, 4), 14));
+
             currentState = Estates.moving;
             nextState = Estates.moving;
         }
@@ -61,21 +67,15 @@ namespace FantasyGame
             switch (currentState)
             {
                 case Estates.moving:
-                    if (velocity.Y > 0)
-                        currentAnimation = 11;
-                    if (velocity.X > 0)
-                        currentAnimation = 12;
-                    if (velocity.X < 0)
-                        currentAnimation = 13;
-                    if (velocity.Y < 0)
-                        currentAnimation = 14;
                     if (velocity == new Vector2f(0, 0))
                     {
                         standing = true;
                         Anim.GetAnimID(animations, currentAnimation).Animation.ResetAnimation();
+
                     }
                     else
                         standing = false;
+                    Anim.GetAnimID(animations, currentAnimation).Animation.PauseAnimation(standing);
                     break;
                 case Estates.attacking:
                     break;
@@ -84,32 +84,45 @@ namespace FantasyGame
                 case Estates.NoInput:
                     break;
             }
-            Anim.GetAnimID(animations, currentAnimation).Animation.Position = new Vector2f(mask.Left, mask.Top);
-            Anim.GetAnimID(animations, currentAnimation).Animation.PauseAnimation(standing);
+            Anim.GetAnimID(animations, currentAnimation).Animation.Position = position;
             Anim.GetAnimID(animations, currentAnimation).Animation.Update();
         }
 
         private void CheckCollision(List<FloatRect> collisions)
         {
-            if (velocity != new Vector2f(0, 0) && CollisionMethods.CheckCollision(collisions, targetMask))
+            if (CollisionMethods.CheckCollision(collisions, targetMask))
                 velocity = new Vector2f(0, 0);
+
             position = new Vector2f(position.X + velocity.X, position.Y + velocity.Y);
 
-            mask = new FloatRect(new Vector2f(position.X - mask.Width / 2, position.Y - mask.Height / 2), new Vector2f(mask.Width, mask.Height));
+            mask = new FloatRect(new Vector2f(position.X, position.Y), new Vector2f(mask.Width, mask.Height));
         }
 
         private void Movement()
         {
+            targetMask = new FloatRect(new Vector2f(position.X, position.Y), new Vector2f(mask.Width, mask.Height));
+
             if (currentState == Estates.moving)
             {
                 if (velocity.X > 5)
+                {
                     velocity.X = 5;
+                }
                 if (velocity.Y > 5)
+                {
                     velocity.Y = 5;
+                }
                 if (velocity.X < -5)
+                {
                     velocity.X = -5;
+                }
                 if (velocity.Y < -5)
+                {
                     velocity.Y = -5;
+                }
+
+                examinationMask.Left = position.X + direction.X * examinationMask.Width;
+                examinationMask.Top = position.Y + direction.Y * examinationMask.Height;
 
                 targetMask.Left += velocity.X;
                 targetMask.Top += velocity.Y;
@@ -127,15 +140,33 @@ namespace FantasyGame
             if (currentState == Estates.moving)
             {
                 if (Keyboard.IsKeyPressed(Keyboard.Key.S))
+                {
                     velocity.Y += 0.3f;
+                    direction = new Vector2f(0, 1);
+                    currentAnimation = 11;
+                }
                 if (Keyboard.IsKeyPressed(Keyboard.Key.W))
+                {
                     velocity.Y -= 0.3f;
+                    direction = new Vector2f(0, -1);
+                    currentAnimation = 14;
+                }
                 if (!Keyboard.IsKeyPressed(Keyboard.Key.W) && !Keyboard.IsKeyPressed(Keyboard.Key.S))
+                {
                     velocity.Y = 0;
+                }
                 if (Keyboard.IsKeyPressed(Keyboard.Key.D))
+                {
                     velocity.X += 0.3f;
+                    direction = new Vector2f(1, 0);
+                    currentAnimation = 12;
+                }
                 if (Keyboard.IsKeyPressed(Keyboard.Key.A))
+                {
                     velocity.X -= 0.3f;
+                    direction = new Vector2f(- 1, 0);
+                    currentAnimation = 13;
+                }
                 if (!Keyboard.IsKeyPressed(Keyboard.Key.A) && !Keyboard.IsKeyPressed(Keyboard.Key.D))
                     velocity.X = 0;
             }
@@ -146,7 +177,12 @@ namespace FantasyGame
 
         public void Draw(RenderWindow window)
         {
-            Anim.GetAnimID(animations, currentAnimation).Animation.Draw(window);
+            Anim.GetAnimID(animations, currentAnimation).Animation.Draw(window);   //TODO: glitch beim collidieren und Richtungswechselung
+
+            RectangleShape test = new RectangleShape(new Vector2f(examinationMask.Width, examinationMask.Height));
+            test.Position = new Vector2f(examinationMask.Left, examinationMask.Top);
+
+            window.Draw(test);
         }
 
 

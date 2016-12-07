@@ -24,17 +24,15 @@ namespace FantasyGame
             ContentManager.spriteMaps.Add(new SpriteMap(0, "base_out_atlas", "base_out_atlas.png", 32, 32));
             ContentManager.spriteMaps.Add(new SpriteMap(0, "terrain_atlas", "terrain_atlas.png", 32, 32));
             ContentManager.spriteMaps.Add(new SpriteMap(0, "houses", "houses.png", 32, 32));
+            ContentManager.spriteMaps.Add(new SpriteMap(0, "player", "player.png", 23, 23));
 
             Map map = new Map("fantasieWorld.tmx");
 
-            Animation test = new Animation("terrain_atlas", 5, 120, 2);
-            test.AnimationLoop = false;
-
-            Player player = new Player("lol", 0, 10, new Vector2f(32, 32), new Vector2f(0, 0));
-            player.addAnimation(11, "terrain_atlas", 3, 60, 1);
-            player.addAnimation(12, "terrain_atlas", 3, 60, 2);
-            player.addAnimation(13, "terrain_atlas", 3, 60, 3);
-            player.addAnimation(14, "terrain_atlas", 3, 60, 4);
+            Player player = new Player("lol", 0, 10, new Vector2f(23, 23), new Vector2f(0, 0));
+            //player.addAnimation(11, "player", 4, 60, 1);
+            //player.addAnimation(12, "player", 4, 60, 2);
+            //player.addAnimation(13, "player", 4, 60, 3);
+            //player.addAnimation(14, "player", 4, 60, 4);
 
             while (true)
             {
@@ -57,8 +55,6 @@ namespace FantasyGame
                     }
 
                 player.Update(map.GetRectangles());
-
-                test.Update();
 
                 window.SetView(view);
 

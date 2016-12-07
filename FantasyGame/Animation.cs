@@ -90,9 +90,9 @@ namespace FantasyGame
         {
             ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[0]].Scale = new Vector2f(size, size);
 
-            ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[0]].Position = new Vector2f(position.X -
-            (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[0]].TextureRect.Width * size) / 2,
-             position.Y - (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[0]].TextureRect.Height * size) / 2);
+            ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[0]].Position = new Vector2f(position.X 
+             /*- (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[0]].TextureRect.Width * size) / 2*/,
+             position.Y/* - (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[0]].TextureRect.Height * size) / 2*/);
 
             currentFrame = 0;
             currentSprite = 0;
@@ -130,9 +130,9 @@ namespace FantasyGame
 
                 ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].Scale = new Vector2f(size, size);
 
-                ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].Position = new Vector2f(position.X -
-                (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].TextureRect.Width * size) / 2,
-                 position.Y - (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].TextureRect.Height * size) / 2);
+                ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].Position = new Vector2f(position.X
+                 /*- (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].TextureRect.Width * size) / 2*/,
+                 position.Y/* - (ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]].TextureRect.Height * size) / 2*/);
 
                 currentFrame++;
             }
