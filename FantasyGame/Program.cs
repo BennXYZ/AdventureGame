@@ -25,6 +25,7 @@ namespace FantasyGame
             ContentManager.spriteMaps.Add(new SpriteMap(0, "terrain_atlas", "terrain_atlas.png", 32, 32));
             ContentManager.spriteMaps.Add(new SpriteMap(0, "houses", "houses.png", 32, 32));
             ContentManager.spriteMaps.Add(new SpriteMap(0, "player", "player.png", 23, 23));
+            ContentManager.spriteMaps.Add(new SpriteMap(0, "collectables", "collectables.png", 28, 28));
 
             Map map = new Map("fantasieWorld.tmx");
 
