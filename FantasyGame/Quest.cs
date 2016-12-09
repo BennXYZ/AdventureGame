@@ -28,6 +28,12 @@ namespace FantasyGame
             return new List<Collectable>();
         }
 
+        public void CheckTask()
+        {
+            task.checkCompletion();
+            QuestCompleted = task.GetCompleted();
+        }
+
         public Quest(TaskToComplete task, List<Collectable> reward, string name, string descritpion, int id)
         {
             this.name = name;
@@ -66,6 +72,11 @@ namespace FantasyGame
                     this.toFind = toFind;
                     break;
             }
+        }
+
+        public bool GetCompleted()
+        {
+            return taskCompleted;
         }
 
         public void checkCompletion()

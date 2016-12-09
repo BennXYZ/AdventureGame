@@ -1,6 +1,6 @@
 ﻿namespace FantasyGame
 {
-    internal class Enemy
+    class Enemy: Character
     {
     }
 }
