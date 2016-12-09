@@ -23,7 +23,6 @@ namespace FantasyGame
         private int health;
         private FloatRect mask, targetMask, examinationMask;
         private Vector2f position, velocity, direction;
-        private List<Collectable> inventory;
 
         public FloatRect Mask
         {
@@ -46,7 +45,6 @@ namespace FantasyGame
             velocity = new Vector2f(0, 0);
             direction = new Vector2f(0, 0);
             standing = true;
-            inventory = new List<Collectable>();
 
             animations = new List<Anim>();
             animations.Add(new Anim(new Animation("player", 4, 30, 1), 11));

@@ -62,6 +62,7 @@
     <Compile Include="ContentManager.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="InputManager.cs" />
+    <Compile Include="Inventory.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />

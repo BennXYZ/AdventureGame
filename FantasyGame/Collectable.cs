@@ -13,16 +13,9 @@ namespace FantasyGame
     abstract class Collectable
     {
         public string name;
-        int sprite;
-        Vector2f position;
         public FloatRect mask;
 
-        public Collectable collect()
-        {
-            sprite = 0;
-            position = new Vector2f(0, 0);
-            return this;
-        }
+        abstract public Collectable collect();
     }
 
     class GoldCoin: Collectable
@@ -51,7 +44,7 @@ namespace FantasyGame
                     new Vector2f(ContentManager.spriteMaps[spriteMapId].width, ContentManager.spriteMaps[spriteMapId].width));
         }
 
-        public Collectable collect()
+        override public Collectable collect()
         {
             position = new Vector2f(0, 0);
             return this;
@@ -66,11 +59,9 @@ namespace FantasyGame
 
     class Thing : Collectable
     {
-        public string name;
         int sprite;
         int spriteMapId;
         Vector2f position;
-        public FloatRect mask;
 
         public Thing(Vector2f position)
         {
@@ -90,7 +81,7 @@ namespace FantasyGame
                     new Vector2f(ContentManager.spriteMaps[spriteMapId].width, ContentManager.spriteMaps[spriteMapId].width));
         }
 
-        public Collectable collect()
+        override public Collectable collect()
         {
             Thing thing = this;
             mask = new FloatRect(new Vector2f(0, 0), new Vector2f(0, 0));

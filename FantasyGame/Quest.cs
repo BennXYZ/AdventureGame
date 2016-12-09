@@ -37,14 +37,29 @@ namespace FantasyGame
         public List<Collectable> getReward()
         {
             if (QuestCompleted)
+            {
                 return reward;
-            return new List<Collectable>();
+            }
+            return new List<Collectable>(0);
         }
 
-        public void CheckTask(List<Collectable> items, List<bool> foundLocations)
+        public List<Type> giveCost()
         {
-            task.checkCompletion(items, foundLocations);
+            List<Type> cost = new List<Type>();
+            if(QuestCompleted)
+            {
+                for (int i = 0; i < task.amountToCollect; i++)
+                    cost.Add(task.toCollect);
+                return cost;
+            }
+            return new List<Type>();
+        }
+
+        public bool CheckTask(Inventory inventory)
+        {
+            task.checkCompletion(inventory);
             QuestCompleted = task.GetCompleted();
+            return QuestCompleted;
         }
 
         public Quest(TaskToComplete task, List<Collectable> reward, string name, string descritpion, int id)
@@ -59,14 +74,14 @@ namespace FantasyGame
 
     class TaskToComplete
     {
-        Collectable toCollect;
-        int amountToCollect;
+        public Type toCollect;
+        public int amountToCollect;
         List<Enemy> toKill;
         List<bool> toFind;
         bool taskCompleted;
         int killCount;      //Combat not implemented
 
-        public TaskToComplete(Collectable toCollect, int amountToCollect, List<bool> toFind)
+        public TaskToComplete(Type toCollect, int amountToCollect, List<bool> toFind)
         {
             taskCompleted = false;
             this.amountToCollect = amountToCollect;
@@ -79,18 +94,12 @@ namespace FantasyGame
             return taskCompleted;
         }
 
-        public void checkCompletion(List<Collectable> items, List<bool> foundLocations)
+        public bool checkCompletion(Inventory inventory)
         {
             taskCompleted = true;
-            int GotItems = 0;
-            for (int i = 0; i < items.Count; i++)
-            {
-                if (items[i].name == toCollect.name)
-                    GotItems++;
-            }
-            if (GotItems < amountToCollect)
+            if (inventory.AmountOf(toCollect) < amountToCollect)
                 taskCompleted = false;
-
+            return taskCompleted;
         }
     }
 }
