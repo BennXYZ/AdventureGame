@@ -21,6 +21,19 @@ namespace FantasyGame
         private List<Collectable> reward;
         private bool QuestCompleted;
 
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+
+            set
+            {
+                name = value;
+            }
+        }
+
         public List<Collectable> getReward()
         {
             if (QuestCompleted)
@@ -28,9 +41,9 @@ namespace FantasyGame
             return new List<Collectable>();
         }
 
-        public void CheckTask()
+        public void CheckTask(List<Collectable> items, List<bool> foundLocations)
         {
-            task.checkCompletion();
+            task.checkCompletion(items, foundLocations);
             QuestCompleted = task.GetCompleted();
         }
 
@@ -46,32 +59,19 @@ namespace FantasyGame
 
     class TaskToComplete
     {
-        public enum questTypes { instawin = 0, collecting = 1, killingMobs = 2, venturing = 3 }
-        questTypes task;
-        List<Collectable> toCollect;
+        Collectable toCollect;
+        int amountToCollect;
         List<Enemy> toKill;
         List<bool> toFind;
         bool taskCompleted;
         int killCount;      //Combat not implemented
 
-        public TaskToComplete(questTypes taskType, List<Collectable> toCollect, List<Enemy> toKill, List<bool> toFind)
+        public TaskToComplete(Collectable toCollect, int amountToCollect, List<bool> toFind)
         {
             taskCompleted = false;
-            switch (task)
-            {
-                case questTypes.instawin:
-                    taskCompleted = true;
-                    break;
-                case questTypes.collecting:
-                    this.toCollect = toCollect;
-                    break;
-                case questTypes.killingMobs:
-                    this.toKill = toKill;
-                    break;
-                case questTypes.venturing:
-                    this.toFind = toFind;
-                    break;
-            }
+            this.amountToCollect = amountToCollect;
+            this.toCollect = toCollect;
+            this.toFind = toFind;
         }
 
         public bool GetCompleted()
@@ -79,9 +79,19 @@ namespace FantasyGame
             return taskCompleted;
         }
 
-        public void checkCompletion()
+        public void checkCompletion(List<Collectable> items, List<bool> foundLocations)
         {
+            taskCompleted = true;
+            int GotItems = 0;
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].name == toCollect.name)
+                    GotItems++;
+            }
+            if (GotItems < amountToCollect)
+                taskCompleted = false;
 
         }
     }
 }
+

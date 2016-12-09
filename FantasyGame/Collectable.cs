@@ -12,9 +12,10 @@ namespace FantasyGame
 {
     abstract class Collectable
     {
-        string name;
+        public string name;
         int sprite;
         Vector2f position;
+        public FloatRect mask;
 
         public Collectable collect()
         {
@@ -26,10 +27,11 @@ namespace FantasyGame
 
     class GoldCoin: Collectable
     {
-        string name;
+        public string name;
         int sprite;
         int spriteMapId;
         Vector2f position;
+        public FloatRect mask;
 
         public GoldCoin(Vector2f position)
         {
@@ -40,9 +42,13 @@ namespace FantasyGame
             for (int r = 0; r < ContentManager.spriteMaps.Count; r++)
             {
                 if ("collectables" == ContentManager.spriteMaps[r].name)
+                {
                     spriteMapId = r;
-                break;
+                    break;
+                }
             }
+            mask = new FloatRect(new Vector2f(position.X, position.Y),
+                    new Vector2f(ContentManager.spriteMaps[spriteMapId].width, ContentManager.spriteMaps[spriteMapId].width));
         }
 
         public Collectable collect()
@@ -60,29 +66,37 @@ namespace FantasyGame
 
     class Thing : Collectable
     {
-        string name;
+        public string name;
         int sprite;
         int spriteMapId;
         Vector2f position;
+        public FloatRect mask;
 
         public Thing(Vector2f position)
         {
-            name = "Gold Coin";
-            sprite = 1;
+            name = "Thing";
+            sprite = 2;
             this.position = position;
 
             for (int r = 0; r < ContentManager.spriteMaps.Count; r++)
             {
                 if ("collectables" == ContentManager.spriteMaps[r].name)
+                {
                     spriteMapId = r;
-                break;
+                    break;
+                }
             }
+            mask = new FloatRect(new Vector2f(position.X, position.Y),
+                    new Vector2f(ContentManager.spriteMaps[spriteMapId].width, ContentManager.spriteMaps[spriteMapId].width));
         }
 
         public Collectable collect()
         {
-            position = new Vector2f(0, 0);
-            return this;
+            Thing thing = this;
+            mask = new FloatRect(new Vector2f(0, 0), new Vector2f(0, 0));
+            sprite = 0;
+            Console.WriteLine(thing.name);
+            return thing;
         }
 
         public void Draw(RenderWindow window)

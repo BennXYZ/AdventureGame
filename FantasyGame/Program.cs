@@ -30,10 +30,8 @@ namespace FantasyGame
             Map map = new Map("fantasieWorld.tmx");
 
             Player player = new Player("lol", 0, 10, new Vector2f(23, 23), new Vector2f(0, 0));
-            //player.addAnimation(11, "player", 4, 60, 1);
-            //player.addAnimation(12, "player", 4, 60, 2);
-            //player.addAnimation(13, "player", 4, 60, 3);
-            //player.addAnimation(14, "player", 4, 60, 4);
+            GoldCoin gold = new GoldCoin(new Vector2f(10, 10));
+            Thing thing = new Thing(new Vector2f(80, 80));
 
             while (true)
             {
@@ -57,6 +55,9 @@ namespace FantasyGame
 
                 player.Update(map.GetRectangles());
 
+                if (player.Mask.Intersects(thing.mask))
+                    thing.collect();
+
                 window.SetView(view);
 
                 window.Clear();
@@ -64,6 +65,8 @@ namespace FantasyGame
 
                 map.Draw(window,view);
                 player.Draw(window);
+                gold.Draw(window);
+                thing.Draw(window);
 
                 window.Display();
             }

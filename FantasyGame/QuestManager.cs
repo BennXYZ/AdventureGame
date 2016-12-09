@@ -6,7 +6,20 @@ using System.Threading.Tasks;
 
 namespace FantasyGame
 {
-    class QuestManager
+    public static class QuestManager
     {
+        static List<Quest> currentQuests;
+
+        static void removeQuest(string name)
+        {
+            for(int i = 0; i < currentQuests.Count; i++)
+            {
+                if (currentQuests[i].Name == name)
+                {
+                    currentQuests.RemoveAt(i);
+                    break;
+                }
+            }
+        }
     }
 }

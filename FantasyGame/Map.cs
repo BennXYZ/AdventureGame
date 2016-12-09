@@ -17,11 +17,7 @@ namespace FantasyGame
     {
         #region PublicMethods
 
-        /// <summary>
-        /// Only for XML. Use the other initializing-Method.
-        /// </summary>
-        private Map()
-        {}
+
 
         /// <summary>
         /// Initializes the Map
@@ -94,6 +90,12 @@ namespace FantasyGame
         #endregion
 
         #region PrivateMethods
+
+        /// <summary>
+        /// Only for XML. Use the other initializing-Method.
+        /// </summary>
+        private Map()
+        { }
 
         /// <summary>
         /// Initializing-Logic

@@ -25,6 +25,13 @@ namespace FantasyGame
         private Vector2f position, velocity, direction;
         private List<Collectable> inventory;
 
+        public FloatRect Mask
+        {
+            get
+            {
+                return mask;
+            }
+        }
 
         public Player(string name, int id, int health, Vector2f size, Vector2f startingPosition)
         {
@@ -33,8 +40,8 @@ namespace FantasyGame
             this.health = health;
             position = startingPosition;
             mask = new FloatRect(new Vector2f(position.X, position.Y), new Vector2f(size.X, size.Y));
-            targetMask = mask;
-            examinationMask = mask;
+            targetMask = Mask;
+            examinationMask = Mask;
             currentAnimation = 11;
             velocity = new Vector2f(0, 0);
             direction = new Vector2f(0, 0);
@@ -97,12 +104,12 @@ namespace FantasyGame
 
             position = new Vector2f(position.X + velocity.X, position.Y + velocity.Y);
 
-            mask = new FloatRect(new Vector2f(position.X, position.Y), new Vector2f(mask.Width, mask.Height));
+            mask = new FloatRect(new Vector2f(position.X, position.Y), new Vector2f(Mask.Width, Mask.Height));
         }
 
         private void Movement()
         {
-            targetMask = new FloatRect(new Vector2f(position.X, position.Y), new Vector2f(mask.Width, mask.Height));
+            targetMask = new FloatRect(new Vector2f(position.X, position.Y), new Vector2f(Mask.Width, Mask.Height));
 
             if (currentState == Estates.moving)
             {
