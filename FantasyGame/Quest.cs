@@ -14,25 +14,12 @@ namespace FantasyGame
 {
     class Quest
     {
-        private string name;
+        public string name;
         private int id;
         private string descritpion;
         private TaskToComplete task;
         private List<Collectable> reward;
         private bool QuestCompleted;
-
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-
-            set
-            {
-                name = value;
-            }
-        }
 
         public List<Collectable> getReward()
         {

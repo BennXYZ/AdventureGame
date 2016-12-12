@@ -19,6 +19,16 @@ namespace FantasyGame
             collectables = new List<Collectable>();
         }
 
+        public int Size()
+        {
+            return collectables.Count;
+        }
+
+        public Collectable GetCollectable(int index)
+        {
+            return collectables[index];
+        }
+
         public void Remove(Type item, int amount)
         {
 

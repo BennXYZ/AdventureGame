@@ -14,17 +14,32 @@ namespace FantasyGame
     {
         public string name;
         public FloatRect mask;
+        public Vector2f position;
 
         abstract public Collectable collect();
+
+        abstract public void Draw(RenderWindow window);
     }
 
     class GoldCoin: Collectable
     {
-        public string name;
         int sprite;
         int spriteMapId;
-        Vector2f position;
-        public FloatRect mask;
+
+        public GoldCoin()
+        {
+            name = "Gold Coin";
+            sprite = 1;
+
+            for (int r = 0; r < ContentManager.spriteMaps.Count; r++)
+            {
+                if ("collectables" == ContentManager.spriteMaps[r].name)
+                {
+                    spriteMapId = r;
+                    break;
+                }
+            }
+        }
 
         public GoldCoin(Vector2f position)
         {
@@ -46,11 +61,13 @@ namespace FantasyGame
 
         override public Collectable collect()
         {
-            position = new Vector2f(0, 0);
-            return this;
+            GoldCoin goldcoin = new GoldCoin();
+            mask = new FloatRect(new Vector2f(0, 0), new Vector2f(0, 0));
+            sprite = 0;
+            return goldcoin;
         }
 
-        public void Draw(RenderWindow window)
+        override public void Draw(RenderWindow window)
         {
             ContentManager.spriteMaps[spriteMapId].Sprites[sprite].Position = position;
             window.Draw(ContentManager.spriteMaps[spriteMapId].Sprites[sprite]);
@@ -61,7 +78,21 @@ namespace FantasyGame
     {
         int sprite;
         int spriteMapId;
-        Vector2f position;
+
+        public Thing()
+        {
+            name = "Thing";
+            sprite = 2;
+
+            for (int r = 0; r < ContentManager.spriteMaps.Count; r++)
+            {
+                if ("collectables" == ContentManager.spriteMaps[r].name)
+                {
+                    spriteMapId = r;
+                    break;
+                }
+            }
+        }
 
         public Thing(Vector2f position)
         {
@@ -83,14 +114,13 @@ namespace FantasyGame
 
         override public Collectable collect()
         {
-            Thing thing = this;
+            Thing thing = new Thing();
             mask = new FloatRect(new Vector2f(0, 0), new Vector2f(0, 0));
             sprite = 0;
-            Console.WriteLine(thing.name);
             return thing;
         }
 
-        public void Draw(RenderWindow window)
+        override public void Draw(RenderWindow window)
         {
             ContentManager.spriteMaps[spriteMapId].Sprites[sprite].Position = position;
             window.Draw(ContentManager.spriteMaps[spriteMapId].Sprites[sprite]);

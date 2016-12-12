@@ -31,14 +31,14 @@ namespace FantasyGame
 
             Player player = new Player("lol", 0, 10, new Vector2f(23, 23), new Vector2f(0, 0));
             Inventory inventory = new Inventory();
-            GoldCoin gold = new GoldCoin(new Vector2f(10, 10));
+            GoldCoin gold = new GoldCoin(new Vector2f(200, 200));
             Thing thing1 = new Thing(new Vector2f(80, 80));
             Thing thing2 = new Thing(new Vector2f(100, 80));
             Thing thing3 = new Thing(new Vector2f(150, 80));
             Thing thing4 = new Thing(new Vector2f(200, 80));
             List<Collectable> reward = new List<Collectable>();
-            reward.Add(gold);
-            Quest quest = new Quest(new TaskToComplete(thing1.GetType(), 3, new List<bool>()), reward, "test", "collect the Thing", 1);
+            reward.Add(new GoldCoin());
+            Quest quest = new Quest(new TaskToComplete(typeof(Thing), 3, new List<bool>()), reward, "test", "collect the Thing", 1);
 
             while (true)
             {
@@ -64,6 +64,11 @@ namespace FantasyGame
                 if (player.Mask.Intersects(thing1.mask))
                 {
                     inventory.Add(thing1.collect(), 1);
+                    lol++;
+                }
+                if (player.Mask.Intersects(gold.mask))
+                {
+                    inventory.Add(gold.collect(), 1);
                     lol++;
                 }
                 if (player.Mask.Intersects(thing2.mask))
@@ -99,6 +104,12 @@ namespace FantasyGame
                 thing2.Draw(window);
                 thing3.Draw(window);
                 thing4.Draw(window);
+
+                for (int i = 0; i < inventory.Size();i++)
+                {
+                    inventory.GetCollectable(i).position = new Vector2f(i * 40, 0);
+                    inventory.GetCollectable(i).Draw(window);
+                }
 
                 window.Display();
             }
