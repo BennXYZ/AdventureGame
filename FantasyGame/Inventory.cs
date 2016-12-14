@@ -37,6 +37,7 @@ namespace FantasyGame
                 if (collectables[i].GetType() == item)
                     collectables.RemoveAt(i);
             }
+            sortInventory();
         }
 
         public void Add(Collectable item, int amount)
@@ -45,6 +46,7 @@ namespace FantasyGame
             {
                 collectables.Add(item);
             }
+            sortInventory();
         }
 
         public int AmountOf(Type item)
@@ -56,6 +58,11 @@ namespace FantasyGame
                     c++;
             }
             return c;
+        }
+
+        private void sortInventory()    //TODO: sortiert die Objekte in 'collectables' nach id (ein Collectable hat eine ID)
+        {
+
         }
     }
 }

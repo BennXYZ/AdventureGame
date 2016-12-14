@@ -15,6 +15,7 @@ namespace FantasyGame
         public string name;
         public FloatRect mask;
         public Vector2f position;
+        public int id;
 
         abstract public Collectable collect();
 
@@ -30,6 +31,7 @@ namespace FantasyGame
         {
             name = "Gold Coin";
             sprite = 1;
+            id = 1;
 
             for (int r = 0; r < ContentManager.spriteMaps.Count; r++)
             {
@@ -83,6 +85,7 @@ namespace FantasyGame
         {
             name = "Thing";
             sprite = 2;
+            id = 2;
 
             for (int r = 0; r < ContentManager.spriteMaps.Count; r++)
             {
