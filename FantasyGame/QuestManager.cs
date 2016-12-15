@@ -14,7 +14,7 @@ namespace FantasyGame
         {
             for(int i = 0; i < currentQuests.Count; i++)
             {
-                if (currentQuests[i].Name == name)
+                if (currentQuests[i].name == name)
                 {
                     currentQuests.RemoveAt(i);
                     break;

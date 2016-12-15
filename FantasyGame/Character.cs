@@ -12,19 +12,9 @@ namespace FantasyGame
 {
     abstract class Character
     {
-        private string name;
-        private int id;
-        private List<Animation> animations;
-        private enum states { };
-        private int health;
-        private FloatRect mask;
-        private Vector2f position, velocity;
 
 
-        public Character() { }
 
-        public void Update() { }
 
-        public void Draw() { }
     }
 }

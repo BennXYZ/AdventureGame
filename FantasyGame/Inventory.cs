@@ -40,6 +40,15 @@ namespace FantasyGame
             sortInventory();
         }
 
+        public void Draw(RenderWindow window, View view)
+        {
+            for(int i = 0; i < collectables.Count; i++)
+            {
+                collectables[i].position = new Vector2f(view.Center.X - (view.Size.X / 2) + 10 + (40 * i), view.Center.Y - (view.Size.Y / 2) + 10);
+                collectables[i].Draw(window);
+            }
+        }
+
         public void Add(Collectable item, int amount)
         {
             for(int i = 0; i < amount; i++)

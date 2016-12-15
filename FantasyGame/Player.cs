@@ -22,7 +22,7 @@ namespace FantasyGame
         private bool standing;
         private int health;
         private FloatRect mask, targetMask, examinationMask;
-        private Vector2f position, velocity, direction;
+        private Vector2f position, velocity;
 
         public FloatRect Mask
         {
@@ -51,7 +51,6 @@ namespace FantasyGame
             examinationMask = Mask;
             currentAnimation = 11;
             velocity = new Vector2f(0, 0);
-            direction = new Vector2f(0, 0);
             standing = true;
 
             animations = new List<Anim>();
@@ -61,6 +60,14 @@ namespace FantasyGame
             animations.Add(new Anim(new Animation("player", 4, 30, 4), 14));
 
             currentState = Estates.moving;
+        }
+
+        /// <summary>
+        /// Returns a Vector at the Center of the players mask
+        /// </summary>
+        public Vector2f Position()
+        {
+            return new Vector2f(position.X + mask.Width / 2, position.Y + mask.Height / 2);
         }
 
         /// <summary>
@@ -157,9 +164,6 @@ namespace FantasyGame
                     velocity.Y = -5;
                 }
 
-                examinationMask.Left = position.X + direction.X * examinationMask.Width;
-                examinationMask.Top = position.Y + direction.Y * examinationMask.Height;
-
                 targetMask.Left += velocity.X;
                 targetMask.Top += velocity.Y;
             }
@@ -175,13 +179,11 @@ namespace FantasyGame
                 if (Keyboard.IsKeyPressed(Keyboard.Key.S))
                 {
                     velocity.Y += 0.3f;
-                    direction = new Vector2f(0, 1);
                     currentAnimation = 11;
                 }
                 if (Keyboard.IsKeyPressed(Keyboard.Key.W))
                 {
                     velocity.Y -= 0.3f;
-                    direction = new Vector2f(0, -1);
                     currentAnimation = 14;
                 }
                 if (!Keyboard.IsKeyPressed(Keyboard.Key.W) && !Keyboard.IsKeyPressed(Keyboard.Key.S))
@@ -191,13 +193,11 @@ namespace FantasyGame
                 if (Keyboard.IsKeyPressed(Keyboard.Key.D))
                 {
                     velocity.X += 0.3f;
-                    direction = new Vector2f(1, 0);
                     currentAnimation = 12;
                 }
                 if (Keyboard.IsKeyPressed(Keyboard.Key.A))
                 {
                     velocity.X -= 0.3f;
-                    direction = new Vector2f(- 1, 0);
                     currentAnimation = 13;
                 }
                 if (!Keyboard.IsKeyPressed(Keyboard.Key.A) && !Keyboard.IsKeyPressed(Keyboard.Key.D))
@@ -214,13 +214,11 @@ namespace FantasyGame
         {
             Anim.GetAnimID(animations, currentAnimation).Animation.Draw(window);
 
-            RectangleShape test = new RectangleShape(new Vector2f(examinationMask.Width, examinationMask.Height)); //TODO: Debug. remove once working
-            test.Position = new Vector2f(examinationMask.Left, examinationMask.Top);
+            //RectangleShape test = new RectangleShape(new Vector2f(examinationMask.Width, examinationMask.Height)); //TODO: Debug. remove once working
+            //test.Position = new Vector2f(examinationMask.Left, examinationMask.Top);
 
-            window.Draw(test);
+            //window.Draw(test);
         }
-
-
     }
 
 

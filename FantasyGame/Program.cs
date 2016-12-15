@@ -18,6 +18,7 @@ namespace FantasyGame
             window.SetFramerateLimit(60);
             View view = new View(new Vector2f(0, 0), new Vector2f(1280, 720));
 
+
             //testing stuff
 
             int lol = 0;
@@ -26,6 +27,8 @@ namespace FantasyGame
             ContentManager.spriteMaps.Add(new SpriteMap(0, "houses", "houses.png", 32, 32));
             ContentManager.spriteMaps.Add(new SpriteMap(0, "player", "player.png", 23, 23));
             ContentManager.spriteMaps.Add(new SpriteMap(0, "collectables", "collectables.png", 28, 28));
+            ContentManager.spriteMaps.Add(new SpriteMap(0, "questBG", "questBG.png", 399, 202));
+            ContentManager.LoadFont();
 
             Map map = new Map("fantasieWorld.tmx");
 
@@ -38,19 +41,12 @@ namespace FantasyGame
             Thing thing4 = new Thing(new Vector2f(200, 80));
             List<Collectable> reward = new List<Collectable>();
             reward.Add(new GoldCoin());
-            Quest quest = new Quest(new TaskToComplete(typeof(Thing), 3, new List<bool>()), reward, "test", "collect the Thing", 1);
+            Quest quest = new Quest(new TaskToComplete(typeof(Thing), 3), reward, "test", "collect the Thing", 1);
 
             while (true)
             {
                 //Map movement
-                if (Keyboard.IsKeyPressed(Keyboard.Key.Down))
-                    view.Center = new Vector2f(view.Center.X, view.Center.Y + 10);
-                if (Keyboard.IsKeyPressed(Keyboard.Key.Up))
-                    view.Center = new Vector2f(view.Center.X, view.Center.Y - 10);
-                if (Keyboard.IsKeyPressed(Keyboard.Key.Left))
-                    view.Center = new Vector2f(view.Center.X - 10, view.Center.Y);
-                if (Keyboard.IsKeyPressed(Keyboard.Key.Right))
-                    view.Center = new Vector2f(view.Center.X + 10, view.Center.Y);
+                view.Center = player.Position();
 
                 //Test Rectangles
                 for (int i = 0; i < map.GetRectangles().Count; i++)
@@ -105,11 +101,9 @@ namespace FantasyGame
                 thing3.Draw(window);
                 thing4.Draw(window);
 
-                for (int i = 0; i < inventory.Size();i++)
-                {
-                    inventory.GetCollectable(i).position = new Vector2f(i * 40, 0);
-                    inventory.GetCollectable(i).Draw(window);
-                }
+                quest.Draw(window, view, inventory, 0);
+
+                inventory.Draw(window, view);
 
                 window.Display();
             }
