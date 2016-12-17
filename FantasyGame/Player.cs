@@ -16,13 +16,10 @@ namespace FantasyGame
         private int id;
         private List<Anim> animations;
         private int currentAnimation;
-        private enum Estates                                         //NoInput for during cutscenes or while talking   
-        { moving = 11, attacking = 21, getHit = 31, NoInput = 91 };  //only needed if combat and cutscenes included
-        private Estates currentState;
         private bool standing;
         private int health;
         private FloatRect mask, targetMask, examinationMask;
-        private Vector2f position, velocity;
+        private Vector2f position, velocity, direction;
 
         public FloatRect Mask
         {
@@ -52,14 +49,13 @@ namespace FantasyGame
             currentAnimation = 11;
             velocity = new Vector2f(0, 0);
             standing = true;
+            direction = new Vector2f(0, 1);
 
             animations = new List<Anim>();
             animations.Add(new Anim(new Animation("player", 4, 30, 1), 11));
             animations.Add(new Anim(new Animation("player", 4, 30, 2), 12));
             animations.Add(new Anim(new Animation("player", 4, 30, 3), 13));
             animations.Add(new Anim(new Animation("player", 4, 30, 4), 14));
-
-            currentState = Estates.moving;
         }
 
         /// <summary>
@@ -87,9 +83,9 @@ namespace FantasyGame
         /// Updates the Input, Movement, Collisions and Animations
         /// </summary>
         /// <param name="collisions">takes the rectangles the player can collide with</param>
-        public void Update(List<FloatRect> collisions)
+        public void Update(List<FloatRect> collisions, List<Npc> npcs, List<Collectable> collectables, Inventory inventory)
         {
-            UpdateInput();
+            UpdateInput(npcs, collectables, inventory);
             Movement();
             CheckCollision(collisions);
             UpdateAnimation();
@@ -101,14 +97,29 @@ namespace FantasyGame
         private void UpdateAnimation()
         {
             if (velocity.Y > velocity.X && velocity.Y > 0)
+            {
                 currentAnimation = 11;
+                direction = new Vector2f(0, 1);
+            }
             if (velocity.Y < velocity.X && velocity.Y < 0)
+            {
                 currentAnimation = 14;
+                direction = new Vector2f(0, -1);
+            }
             if (velocity.Y > velocity.X && velocity.Y == 0)
+            {
                 currentAnimation = 13;
+                direction = new Vector2f(-1, 0);
+            }
             if (velocity.Y < velocity.X && velocity.Y == 0)
+            {
                 currentAnimation = 12;
+                direction = new Vector2f(1, 0);
+            }
+        }
 
+        private void UpdateSprite()
+        {
             if (velocity == new Vector2f(0, 0))
             {
                 standing = true;
@@ -136,6 +147,7 @@ namespace FantasyGame
             position = new Vector2f(position.X + velocity.X, position.Y + velocity.Y);
 
             mask = new FloatRect(new Vector2f(position.X, position.Y), new Vector2f(Mask.Width, Mask.Height));
+            examinationMask = new FloatRect(new Vector2f(position.X + direction.X * mask.Width, position.Y + direction.Y * mask.Height), new Vector2f(mask.Width, mask.Height));
         }
 
         /// <summary>
@@ -145,8 +157,7 @@ namespace FantasyGame
         {
             targetMask = new FloatRect(new Vector2f(position.X, position.Y), new Vector2f(Mask.Width, Mask.Height));
 
-            if (currentState == Estates.moving)
-            {
+
                 if (velocity.X > 5)
                 {
                     velocity.X = 5;
@@ -166,44 +177,48 @@ namespace FantasyGame
 
                 targetMask.Left += velocity.X;
                 targetMask.Top += velocity.Y;
-            }
+            
         }
 
         /// <summary>
         /// updates velocity depending on pressed keys
         /// </summary>
-        private void UpdateInput()
+        private void UpdateInput(List<Npc> npcs, List<Collectable> collectables, Inventory inventory)
         {
-            if (currentState == Estates.moving)
-            {
-                if (Keyboard.IsKeyPressed(Keyboard.Key.S))
-                {
-                    velocity.Y += 0.3f;
-                    currentAnimation = 11;
-                }
-                if (Keyboard.IsKeyPressed(Keyboard.Key.W))
-                {
-                    velocity.Y -= 0.3f;
-                    currentAnimation = 14;
-                }
-                if (!Keyboard.IsKeyPressed(Keyboard.Key.W) && !Keyboard.IsKeyPressed(Keyboard.Key.S))
-                {
-                    velocity.Y = 0;
-                }
-                if (Keyboard.IsKeyPressed(Keyboard.Key.D))
-                {
-                    velocity.X += 0.3f;
-                    currentAnimation = 12;
-                }
-                if (Keyboard.IsKeyPressed(Keyboard.Key.A))
-                {
-                    velocity.X -= 0.3f;
-                    currentAnimation = 13;
-                }
-                if (!Keyboard.IsKeyPressed(Keyboard.Key.A) && !Keyboard.IsKeyPressed(Keyboard.Key.D))
-                    velocity.X = 0;
-            }
 
+            if (Keyboard.IsKeyPressed(Keyboard.Key.S))
+            {
+                velocity.Y += 0.3f;
+                currentAnimation = 11;
+                direction = new Vector2f(0, 1);
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.W))
+            {
+                velocity.Y -= 0.3f;
+                currentAnimation = 14;
+                direction = new Vector2f(0, -1);
+            }
+            if (!Keyboard.IsKeyPressed(Keyboard.Key.W) && !Keyboard.IsKeyPressed(Keyboard.Key.S))
+            {
+                velocity.Y = 0;
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.D))
+            {
+                velocity.X += 0.3f;
+                currentAnimation = 12;
+                direction = new Vector2f(1, 0);
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.A))
+            {
+                velocity.X -= 0.3f;
+                currentAnimation = 13;
+                direction = new Vector2f(-1, 0);
+            }
+            if (!Keyboard.IsKeyPressed(Keyboard.Key.A) && !Keyboard.IsKeyPressed(Keyboard.Key.D))
+                velocity.X = 0;
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
+                Interact(npcs, collectables,inventory);
         }
 
         /// <summary>
@@ -212,12 +227,34 @@ namespace FantasyGame
         /// <param name="window">window of the main-program</param>
         public void Draw(RenderWindow window)
         {
+            UpdateSprite();
+
             Anim.GetAnimID(animations, currentAnimation).Animation.Draw(window);
 
-            //RectangleShape test = new RectangleShape(new Vector2f(examinationMask.Width, examinationMask.Height)); //TODO: Debug. remove once working
-            //test.Position = new Vector2f(examinationMask.Left, examinationMask.Top);
+            RectangleShape test = new RectangleShape(new Vector2f(examinationMask.Width, examinationMask.Height)); //TODO: Debug. remove once working
+            test.Position = new Vector2f(examinationMask.Left, examinationMask.Top);
 
-            //window.Draw(test);
+            window.Draw(test);
+        }
+
+        /// <summary>
+        /// Interacts with Objects on the map. Uses specific methods of the objects
+        /// </summary>
+        /// <param name="npcs">List of npcs on the map. Loads their Interact-Method (usually for Quests)</param>
+        /// <param name="collectables">List of Collectables on the map. Used to collect them (adds them in inventory)</param>
+        /// <param name="inventory">Necesarry to Check on Quests and to collect Items</param>
+        public void Interact(List<Npc> npcs, List<Collectable> collectables, Inventory inventory)
+        {
+            for(int i = 0; i < npcs.Count; i++)
+            {
+                if (npcs[i].Mask.Intersects(examinationMask))
+                    npcs[i].Interact(inventory);
+            }
+            for (int i = 0; i < collectables.Count; i++)
+            {
+                if (collectables[i].mask.Intersects(examinationMask) || collectables[i].mask.Intersects(mask))
+                    inventory.Add(collectables[i].collect(),1);
+            }
         }
     }
 

@@ -18,104 +18,61 @@ namespace FantasyGame
             window.SetFramerateLimit(60);
             View view = new View(new Vector2f(0, 0), new Vector2f(1280, 720));
 
+            //Load Spritemaps
+            ContentManager.Load();
+            QuestManager.currentQuests = new List<Quest>();
 
             //testing stuff
+            //Create Collectables
+            List<Collectable> collectables = new List<Collectable>();
+            collectables.Add(new Thing(new Vector2f(100, 50)));
 
-            int lol = 0;
-            ContentManager.spriteMaps.Add(new SpriteMap(0, "base_out_atlas", "base_out_atlas.png", 32, 32));
-            ContentManager.spriteMaps.Add(new SpriteMap(0, "terrain_atlas", "terrain_atlas.png", 32, 32));
-            ContentManager.spriteMaps.Add(new SpriteMap(0, "houses", "houses.png", 32, 32));
-            ContentManager.spriteMaps.Add(new SpriteMap(0, "player", "player.png", 23, 23));
-            ContentManager.spriteMaps.Add(new SpriteMap(0, "collectables", "collectables.png", 28, 28));
-            ContentManager.spriteMaps.Add(new SpriteMap(0, "questBG", "questBG.png", 399, 202));
-            ContentManager.LoadFont();
+            //Create NPCS
+            List<Collectable> reward = new List<Collectable>();
+            reward.Add(new GoldCoin());
+            List<Npc> npcs = new List<Npc>();
+            npcs.Add(new Npc("lol", 0, new Vector2f(23, 23), new Vector2f(50, 50), new Quest(new TaskToComplete(typeof(Thing), 3), reward, "test", "collect the Thing", 1)));
 
+            //Load Map
             Map map = new Map("fantasieWorld.tmx");
+            List<FloatRect> collisionBlocks = new List<FloatRect>();
+            for (int i = 0; i < map.GetRectangles().Count; i++)
+                collisionBlocks.Add(map.GetRectangles()[i]);
+            for (int i = 0; i < npcs.Count; i++)
+                collisionBlocks.Add(npcs[i].Mask);
+
 
             Player player = new Player("lol", 0, 10, new Vector2f(23, 23), new Vector2f(0, 0));
             Inventory inventory = new Inventory();
-            GoldCoin gold = new GoldCoin(new Vector2f(200, 200));
-            Thing thing1 = new Thing(new Vector2f(80, 80));
-            Thing thing2 = new Thing(new Vector2f(100, 80));
-            Thing thing3 = new Thing(new Vector2f(150, 80));
-            Thing thing4 = new Thing(new Vector2f(200, 80));
-            List<Collectable> reward = new List<Collectable>();
-            reward.Add(new GoldCoin());
-            Quest quest = new Quest(new TaskToComplete(typeof(Thing), 3), reward, "test", "collect the Thing", 1);
 
             while (true)
             {
                 //Map movement
                 view.Center = player.Position();
 
-                //Test Rectangles
-                for (int i = 0; i < map.GetRectangles().Count; i++)
-                    if (map.GetRectangles()[i].Intersects(new FloatRect(new Vector2f(view.Center.X, view.Center.Y), new Vector2f(5, 5))))
-                    {
-                        Console.WriteLine(lol);
-                    }
+                // ****** Update *************************************************************************
 
-                player.Update(map.GetRectangles());
+                player.Update(collisionBlocks,npcs, collectables,inventory);
+                npcs[0].Update(map.GetRectangles());
+                
 
-                if (player.Mask.Intersects(thing1.mask))
-                {
-                    inventory.Add(thing1.collect(), 1);
-                    lol++;
-                }
-                if (player.Mask.Intersects(gold.mask))
-                {
-                    inventory.Add(gold.collect(), 1);
-                    lol++;
-                }
-                if (player.Mask.Intersects(thing2.mask))
-                {
-                    inventory.Add(thing2.collect(), 1);
-                    lol++;
-                }
-                if (player.Mask.Intersects(thing3.mask))
-                {
-                    inventory.Add(thing3.collect(), 1);
-                    lol++;
-                }
-                if (player.Mask.Intersects(thing4.mask))
-                {
-                    inventory.Add(thing4.collect(), 1);
-                    lol++;
-                }
+                // ****** Draw ***************************************************************************
 
                 window.SetView(view);
 
                 window.Clear();
 
-                if (quest.CheckTask(inventory))
-                {
-                    inventory.Add(quest.getReward()[0], quest.getReward().Count);
-                    inventory.Remove(quest.giveCost()[0], quest.giveCost().Count + 1);
-                }
-
                 map.Draw(window,view);
                 player.Draw(window);
-                gold.Draw(window);
-                thing1.Draw(window);
-                thing2.Draw(window);
-                thing3.Draw(window);
-                thing4.Draw(window);
 
-                quest.Draw(window, view, inventory, 0);
-
+                for (int i = 0; i < collectables.Count; i++)
+                    collectables[i].Draw(window);
+                npcs[0].Draw(window);
+                QuestManager.DrawQuests(window, view, inventory);
                 inventory.Draw(window, view);
 
                 window.Display();
             }
-
-
-        }
-
-        private void crazyshit(Vector2f position, List<FloatRect> collisions)
-        {
-            for (int i = 0; i < collisions.Count; i++)
-                if (collisions[i].Intersects(new FloatRect(new Vector2f(position.X, position.Y), new Vector2f(5, 5))))
-                    Console.WriteLine("lol");
         }
     }
 }

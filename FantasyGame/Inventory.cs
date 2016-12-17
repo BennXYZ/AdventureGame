@@ -14,6 +14,14 @@ namespace FantasyGame
     {
         private List<Collectable> collectables;
 
+        public List<Collectable> Collectables
+        {
+            get
+            {
+                return collectables;
+            }
+        }
+
         public Inventory()
         {
             collectables = new List<Collectable>();
@@ -21,31 +29,31 @@ namespace FantasyGame
 
         public int Size()
         {
-            return collectables.Count;
+            return Collectables.Count;
         }
 
         public Collectable GetCollectable(int index)
         {
-            return collectables[index];
+            return Collectables[index];
         }
 
         public void Remove(Type item, int amount)
         {
 
-            for(int i = collectables.Count - 1; i > -1; i--)
+            for(int i = Collectables.Count - 1; i > -1; i--)
             {
-                if (collectables[i].GetType() == item)
-                    collectables.RemoveAt(i);
+                if (Collectables[i].GetType() == item)
+                    Collectables.RemoveAt(i);
             }
             sortInventory();
         }
 
         public void Draw(RenderWindow window, View view)
         {
-            for(int i = 0; i < collectables.Count; i++)
+            for(int i = 0; i < Collectables.Count; i++)
             {
-                collectables[i].position = new Vector2f(view.Center.X - (view.Size.X / 2) + 10 + (40 * i), view.Center.Y - (view.Size.Y / 2) + 10);
-                collectables[i].Draw(window);
+                Collectables[i].position = new Vector2f(view.Center.X - (view.Size.X / 2) + 10 + (40 * i), view.Center.Y - (view.Size.Y / 2) + 10);
+                Collectables[i].Draw(window);
             }
         }
 
@@ -53,7 +61,7 @@ namespace FantasyGame
         {
             for(int i = 0; i < amount; i++)
             {
-                collectables.Add(item);
+                Collectables.Add(item);
             }
             sortInventory();
         }
@@ -61,9 +69,9 @@ namespace FantasyGame
         public int AmountOf(Type item)
         {
             int c = 0;
-            for(int i = 0; i < collectables.Count; i++)
+            for(int i = 0; i < Collectables.Count; i++)
             {
-                if (collectables[i].GetType() == item)
+                if (Collectables[i].GetType() == item)
                     c++;
             }
             return c;

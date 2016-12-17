@@ -112,7 +112,7 @@ namespace FantasyGame
                 }
             }
             mask = new FloatRect(new Vector2f(position.X, position.Y),
-                    new Vector2f(ContentManager.spriteMaps[spriteMapId].width, ContentManager.spriteMaps[spriteMapId].width));
+                    new Vector2f(ContentManager.spriteMaps[spriteMapId].tilewidth, ContentManager.spriteMaps[spriteMapId].tileheight));
         }
 
         override public Collectable collect()
