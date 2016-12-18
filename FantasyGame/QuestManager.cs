@@ -14,7 +14,7 @@ namespace FantasyGame
 {
     static class QuestManager
     {
-        public static List<Quest> currentQuests;
+        public static List<Quest> currentQuests;  //List of currently Active Quests
 
         public static void removeQuest(string name)
         {
@@ -38,6 +38,11 @@ namespace FantasyGame
             }
         }
 
+        /// <summary>
+        /// Used to get a Quest with a specific name
+        /// </summary>
+        /// <param name="name">Name of the quest you are looking for</param>
+        /// <returns>Returns a Quest</returns>
         public static Quest SearchForQuest(string name)
         {
             for (int i = 0; i < currentQuests.Count; i++)
@@ -47,15 +52,26 @@ namespace FantasyGame
                     return currentQuests[i];
                 }
             }
-            throw new ArgumentOutOfRangeException("Quest doesn't exist");
+            throw new ArgumentOutOfRangeException("Quest doesn't exist");  //No Problems by now
         }
 
+        /// <summary>
+        /// Draws the Quest in the upper right corner
+        /// </summary>
+        /// <param name="window">necesarry to Draw something</param>
+        /// <param name="view">necessary to pin the Quest-Window to the upper right corner of the View</param>
+        /// <param name="inventory">necessary to draw the progress of the Quest</param>
         public static void DrawQuests(RenderWindow window, View view, Inventory inventory)
         {
             for (int i = 0; i < currentQuests.Count; i++)
                 currentQuests[i].Draw(window, view, inventory,i);
         }
 
+        /// <summary>
+        /// Checks if a Quest exists within the List of Active Quests
+        /// </summary>
+        /// <param name="name">name of the Quest you are checking</param>
+        /// <returns></returns>
         public static bool QuestInList(string name)
         {
             for (int i = 0; i < currentQuests.Count; i++)

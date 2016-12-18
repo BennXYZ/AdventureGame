@@ -398,7 +398,7 @@ namespace FantasyGame
         /// Id of the Rectangle because why nawt?
         /// </summary>
         [XmlAttribute("id")]
-        public int id
+        public float id
         {
             get;
             set;
@@ -408,7 +408,7 @@ namespace FantasyGame
         /// X-Position of the Rectangle
         /// </summary>
         [XmlAttribute("x")]
-        public int x
+        public float x
         {
             get;
             set;
@@ -418,7 +418,7 @@ namespace FantasyGame
         /// Y-Position of the Rectangle
         /// </summary>
         [XmlAttribute("y")]
-        public int y
+        public float y
         {
             get;
             set;
@@ -428,7 +428,7 @@ namespace FantasyGame
         /// width of the Rectangle
         /// </summary>
         [XmlAttribute("width")]
-        public int width
+        public float width
         {
             get;
             set;
@@ -438,7 +438,7 @@ namespace FantasyGame
         /// Height of the Rectangle
         /// </summary>
         [XmlAttribute("height")]
-        public int height
+        public float height
         {
             get;
             set;

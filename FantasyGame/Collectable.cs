@@ -22,6 +22,7 @@ namespace FantasyGame
         abstract public void Draw(RenderWindow window);
     }
 
+    //ID = 1
     class GoldCoin: Collectable
     {
         int sprite;
@@ -76,14 +77,15 @@ namespace FantasyGame
         }
     }
 
-    class Thing : Collectable
+    //ID = 2
+    class Mushroom : Collectable
     {
         int sprite;
         int spriteMapId;
 
-        public Thing()
+        public Mushroom()
         {
-            name = "Thing";
+            name = "Mushroom";
             sprite = 2;
             id = 2;
 
@@ -97,10 +99,11 @@ namespace FantasyGame
             }
         }
 
-        public Thing(Vector2f position)
+        public Mushroom(Vector2f position)
         {
-            name = "Thing";
+            name = "Mushroom";
             sprite = 2;
+            id = 2;
             this.position = position;
 
             for (int r = 0; r < ContentManager.spriteMaps.Count; r++)
@@ -117,10 +120,10 @@ namespace FantasyGame
 
         override public Collectable collect()
         {
-            Thing thing = new Thing();
+            Mushroom temp = new Mushroom();
             mask = new FloatRect(new Vector2f(0, 0), new Vector2f(0, 0));
             sprite = 0;
-            return thing;
+            return temp;
         }
 
         override public void Draw(RenderWindow window)

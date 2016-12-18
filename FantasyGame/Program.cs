@@ -25,13 +25,17 @@ namespace FantasyGame
             //testing stuff
             //Create Collectables
             List<Collectable> collectables = new List<Collectable>();
-            collectables.Add(new Thing(new Vector2f(100, 50)));
+            collectables.Add(new Mushroom(new Vector2f(150, 500)));
+            collectables.Add(new Mushroom(new Vector2f(700, 500)));
+            collectables.Add(new Mushroom(new Vector2f(700, 200)));
+            collectables.Add(new Mushroom(new Vector2f(500, 200)));
+
 
             //Create NPCS
             List<Collectable> reward = new List<Collectable>();
             reward.Add(new GoldCoin());
             List<Npc> npcs = new List<Npc>();
-            npcs.Add(new Npc("lol", 0, new Vector2f(23, 23), new Vector2f(50, 50), new Quest(new TaskToComplete(typeof(Thing), 3), reward, "test", "collect the Thing", 1)));
+            npcs.Add(new Npc("lol", 0, new Vector2f(23, 23), new Vector2f(200, 2500), new Quest(new TaskToComplete(typeof(Mushroom), 3), reward, "test", "collect the Thing", 1)));
 
             //Load Map
             Map map = new Map("fantasieWorld.tmx");
@@ -42,19 +46,20 @@ namespace FantasyGame
                 collisionBlocks.Add(npcs[i].Mask);
 
 
-            Player player = new Player("lol", 0, 10, new Vector2f(23, 23), new Vector2f(0, 0));
+            Player player = new Player("lol", 0, 10, new Vector2f(23, 23), new Vector2f(300, 2500));
             Inventory inventory = new Inventory();
 
             while (true)
             {
                 //Map movement
-                view.Center = player.Position();
+                updateView(view, player, map);
+
 
                 // ****** Update *************************************************************************
 
-                player.Update(collisionBlocks,npcs, collectables,inventory);
+                player.Update(collisionBlocks, npcs, collectables, inventory);
                 npcs[0].Update(map.GetRectangles());
-                
+
 
                 // ****** Draw ***************************************************************************
 
@@ -62,17 +67,30 @@ namespace FantasyGame
 
                 window.Clear();
 
-                map.Draw(window,view);
+                map.Draw(window, view);
                 player.Draw(window);
 
                 for (int i = 0; i < collectables.Count; i++)
                     collectables[i].Draw(window);
+
                 npcs[0].Draw(window);
                 QuestManager.DrawQuests(window, view, inventory);
                 inventory.Draw(window, view);
 
                 window.Display();
             }
+        }
+        static void updateView(View view, Player player,Map map)
+        {
+            view.Center = player.Position();
+            if (view.Center.X - view.Size.X / 2 < 0)
+                view.Center = new Vector2f(view.Size.X / 2, view.Center.Y);
+            if (view.Center.X + view.Size.X / 2 > map.width * map.tilewidth)
+                view.Center = new Vector2f(map.width * map.tilewidth - view.Size.X / 2, view.Center.Y);
+            if (view.Center.Y - view.Size.Y / 2 < 0)
+                view.Center = new Vector2f(view.Center.X, view.Size.Y / 2);
+            if (view.Center.Y + view.Size.Y / 2 > map.height * map.tileheight)
+                view.Center = new Vector2f(view.Center.X, map.height * map.tileheight - view.Size.Y / 2);
         }
     }
 }
