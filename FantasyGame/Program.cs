@@ -80,6 +80,7 @@ namespace FantasyGame
                 window.Display();
             }
         }
+
         static void updateView(View view, Player player,Map map)
         {
             view.Center = player.Position();
