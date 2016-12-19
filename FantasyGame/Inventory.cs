@@ -12,8 +12,14 @@ namespace FantasyGame
 {
     class Inventory
     {
+        /// <summary>
+        /// List of Collectables. This is the ACTUAL Inventory that contains all the Items
+        /// </summary>
         private List<Collectable> collectables;
 
+        /// <summary>
+        /// Used to get the Content within the Inventory
+        /// </summary>
         public List<Collectable> Collectables
         {
             get
@@ -22,21 +28,38 @@ namespace FantasyGame
             }
         }
 
+        /// <summary>
+        /// Creates a Inventory... Yes it just creates a new List
+        /// </summary>
         public Inventory()
         {
             collectables = new List<Collectable>();
         }
 
+        /// <summary>
+        /// How many Items are within the Inventory
+        /// </summary>
+        /// <returns>returns an int showing the Count of the Collectables-List</returns>
         public int Size()
         {
             return Collectables.Count;
         }
 
+        /// <summary>
+        /// Used to get the Collectable at a List-Index. Usefull to look through the Inventory
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public Collectable GetCollectable(int index)
         {
             return Collectables[index];
         }
 
+        /// <summary>
+        /// Searches for a specific Collectable in the Inventory
+        /// </summary>
+        /// <param name="type">Type if Collectable that you are looking for. Only use Collectables, since List can contain nothing else</param>
+        /// <returns>Returns index of the first found Collectable of the type</returns>
         public int GetIndexOf(Type type)
         {
             for (int i = 0; i < collectables.Count; i++)
@@ -45,6 +68,11 @@ namespace FantasyGame
             return -1;
         }
 
+        /// <summary>
+        /// Used to remove Collectables from the Inventory
+        /// </summary>
+        /// <param name="item">type of Collectable you want to remove</param>
+        /// <param name="amount">how many of the wanted types should be removed</param>
         public void Remove(Type item, int amount)
         {
             for (int a = 0; a < amount; a++)
@@ -52,6 +80,9 @@ namespace FantasyGame
             sortInventory();
         }
 
+        /// <summary>
+        /// Draws the Items in the Inventory in the upper left Corner
+        /// </summary>
         public void Draw(RenderWindow window, View view)
         {
             for(int i = 0; i < Collectables.Count; i++)
@@ -61,6 +92,11 @@ namespace FantasyGame
             }
         }
 
+        /// <summary>
+        /// Adds Collectables to the List
+        /// </summary>
+        /// <param name="item">collectable you want to add</param>
+        /// <param name="amount">how many of the collectable you want to add</param>
         public void Add(Collectable item, int amount)
         {
             for(int i = 0; i < amount; i++)
@@ -70,6 +106,11 @@ namespace FantasyGame
             sortInventory();
         }
 
+        /// <summary>
+        /// Used to get the amount of a specific Collectable within the Inventory
+        /// </summary>
+        /// <param name="item">type of Collectable</param>
+        /// <returns>Returns an int of how many collectables have been found</returns>
         public int AmountOf(Type item)
         {
             int c = 0;
@@ -81,7 +122,10 @@ namespace FantasyGame
             return c;
         }
 
-        private void sortInventory()    //TODO: sortiert die Objekte in 'collectables' nach id (ein Collectable hat eine ID)
+        /// <summary>
+        /// Used to sort the Collectables in the inventory by their IDs after adding/removing one. Uses Bubblesort
+        /// </summary>
+        private void sortInventory()
         {
             List<Collectable> temp = new List<Collectable>();
 

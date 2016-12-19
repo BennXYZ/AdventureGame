@@ -230,11 +230,6 @@ namespace FantasyGame
             UpdateSprite();
 
             Anim.GetAnimID(animations, currentAnimation).Animation.Draw(window);
-
-            //RectangleShape test = new RectangleShape(new Vector2f(examinationMask.Width, examinationMask.Height)); //TODO: Debug. remove once working
-            //test.Position = new Vector2f(examinationMask.Left, examinationMask.Top);
-
-            //window.Draw(test);
         }
 
         /// <summary>

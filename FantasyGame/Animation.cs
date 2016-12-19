@@ -14,6 +14,9 @@ namespace FantasyGame
     {
         #region variables
 
+        /// <summary>
+        /// List of int, that memorize which tiles of the spritemap are in the animation
+        /// </summary>
         private List<int> spriteIDs;
         private int spriteMapID;
         private Vector2f position;
@@ -59,6 +62,13 @@ namespace FantasyGame
 
         #region Methods
 
+        /// <summary>
+        /// Creates an Instanze of an Animation. Generally used in an List of Animations
+        /// </summary>
+        /// <param name="spriteMapName">name of the Spritemap it loads its sprites from</param>
+        /// <param name="spriteAmount">How many Sprites in an horizontal order are used in the Animation Don't go higher than the Spritemap-width</param>
+        /// <param name="frameAmount">Amount of Frames that have to pass by untill the animation is finished</param>
+        /// <param name="column">Column in the Spritemap that has the needed sprites</param>
         public Animation(string spriteMapName, int spriteAmount, int frameAmount, int column)
         {
             this.frameAmount = frameAmount;
@@ -98,11 +108,18 @@ namespace FantasyGame
             currentSprite = 0;
         }
 
+        /// <summary>
+        /// pauses the Animation, meaning that it freezes
+        /// </summary>
+        /// <param name="paused">bool that sets whether the Animation should freeze</param>
         public void PauseAnimation(bool paused)
         {
             animationPaused = paused;
         }
 
+        /// <summary>
+        /// Updates the Animation, recognizing which Frame should be drawn next
+        /// </summary>
         private void CurrentSpriteManager()
         {
             if (currentFrame >= frameAmount / spriteIDs.Count)
@@ -122,6 +139,9 @@ namespace FantasyGame
             }
         }
 
+        /// <summary>
+        /// Updates  the Animation. Necessary to play the animation. If animation is paused, it doesn't Update
+        /// </summary>
         public void Update()
         {
             if (!animationPaused)
@@ -139,11 +159,19 @@ namespace FantasyGame
 
         }
 
+        /// <summary>
+        /// Draws the current Sprite of the Animation.
+        /// </summary>
+        /// <param name="window">main-window of the program</param>
         public void Draw(RenderWindow window)
         {
             window.Draw(new Sprite(ContentManager.spriteMaps[spriteMapID].Sprites[spriteIDs[currentSprite]]));
         }
 
+        /// <summary>
+        /// Used to recognize, whether the Animation has ended. Recommended with Animationloop on false
+        /// </summary>
+        /// <returns>Returns a boolean at the last frame of the animation</returns>
         public bool EndOfAnimation()
         {
             return (currentFrame >= frameAmount / spriteIDs.Count && currentSprite + 1 == spriteIDs.Count);
@@ -152,8 +180,16 @@ namespace FantasyGame
         #endregion
     }
 
+    /// <summary>
+    /// Basically an Animation with ID
+    /// </summary>
     class Anim
     {
+        /// <summary>
+        /// Creates an Instance of an Anim.
+        /// </summary>
+        /// <param name="animation">Animations of the Object</param>
+        /// <param name="id">ID. Durhur</param>
         public Anim(Animation animation, int id)
         {
             this.animation = animation;

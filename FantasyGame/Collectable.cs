@@ -17,8 +17,16 @@ namespace FantasyGame
         public Vector2f position;
         public int id;
 
+        /// <summary>
+        /// Used when collecting a Collectable that lies on the map. removes the collectable after usage.
+        /// </summary>
+        /// <returns>Returns the Collectable. Used to add to the Inventory</returns>
         abstract public Collectable collect();
 
+        /// <summary>
+        /// Used to draw the Collectable. Used by Collectable-List and Inventory
+        /// </summary>
+        /// <param name="window"></param>
         abstract public void Draw(RenderWindow window);
     }
 
@@ -28,6 +36,9 @@ namespace FantasyGame
         int sprite;
         int spriteMapId;
 
+        /// <summary>
+        /// Creates a Goldcoin. Mainly used by the Inventory and Quests
+        /// </summary>
         public GoldCoin()
         {
             name = "Gold Coin";
@@ -44,6 +55,10 @@ namespace FantasyGame
             }
         }
 
+        /// <summary>
+        /// Creates Goldcoin with Position. Used to create Goldcoins that lie around on the map
+        /// </summary>
+        /// <param name="position">position whrere the Gold Coin lies.</param>
         public GoldCoin(Vector2f position)
         {
             name = "Gold Coin";
@@ -62,6 +77,10 @@ namespace FantasyGame
                     new Vector2f(ContentManager.spriteMaps[spriteMapId].width, ContentManager.spriteMaps[spriteMapId].width));
         }
 
+        /// <summary>
+        /// Used when collecting a GoldCoin that lies on the map. removes the GoldCoin after usage.
+        /// </summary>
+        /// <returns>Returns the GoldCoin. Used to add to the Inventory</returns>
         override public Collectable collect()
         {
             GoldCoin goldcoin = new GoldCoin();
@@ -70,6 +89,9 @@ namespace FantasyGame
             return goldcoin;
         }
 
+        /// <summary>
+        /// Draws the GoldCoin at it's current Position (upper left corner if within Inventory)
+        /// </summary>
         override public void Draw(RenderWindow window)
         {
             ContentManager.spriteMaps[spriteMapId].Sprites[sprite].Position = position;
@@ -83,6 +105,9 @@ namespace FantasyGame
         int sprite;
         int spriteMapId;
 
+        /// <summary>
+        /// Creates a Mushroom. Mainly used by the Inventory and Quests
+        /// </summary>
         public Mushroom()
         {
             name = "Mushroom";
@@ -99,6 +124,10 @@ namespace FantasyGame
             }
         }
 
+        /// <summary>
+        /// Creates Mushroom with Position. Used to create Mushrooms that lie around on the map
+        /// </summary>
+        /// <param name="position">position whrere the Mushroom lies.</param>
         public Mushroom(Vector2f position)
         {
             name = "Mushroom";
@@ -118,6 +147,10 @@ namespace FantasyGame
                     new Vector2f(ContentManager.spriteMaps[spriteMapId].tilewidth, ContentManager.spriteMaps[spriteMapId].tileheight));
         }
 
+        /// <summary>
+        /// Used when collecting a Mushroom that lies on the map. removes the Mushroom after usage.
+        /// </summary>
+        /// <returns>Returns the Mushroom. Used to add to the Inventory</returns>
         override public Collectable collect()
         {
             Mushroom temp = new Mushroom();
@@ -126,6 +159,9 @@ namespace FantasyGame
             return temp;
         }
 
+        /// <summary>
+        /// Draws the Mushroom at it's current Position (upper left corner if within Inventory)
+        /// </summary>
         override public void Draw(RenderWindow window)
         {
             ContentManager.spriteMaps[spriteMapId].Sprites[sprite].Position = position;

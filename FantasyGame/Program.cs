@@ -35,7 +35,7 @@ namespace FantasyGame
             List<Collectable> reward = new List<Collectable>();
             reward.Add(new GoldCoin());
             List<Npc> npcs = new List<Npc>();
-            npcs.Add(new Npc("lol", 0, new Vector2f(23, 23), new Vector2f(200, 2500), new Quest(new TaskToComplete(typeof(Mushroom), 3), reward, "test", "collect the Thing", 1)));
+            npcs.Add(new Npc("lol", 0, new Vector2f(23, 23), new Vector2f(200, 2500), new Quest(new TaskToComplete(typeof(Mushroom), 3), reward, "test", "collect three Mushrooms", 1)));
 
             //Load Map
             Map map = new Map("fantasieWorld.tmx");

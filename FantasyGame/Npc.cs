@@ -30,12 +30,12 @@ namespace FantasyGame
         }
 
         /// <summary>
-        /// creates a bastard to play with
+        /// creates a non-playable bastard to play with
         /// </summary>
         /// <param name="name">name of the dude (derp)</param>
         /// <param name="id">id (not sure what for)</param>
-        /// <param name="size">sets the size of the player-Rectangle</param>
-        /// <param name="startingPosition">where the player is being creates</param>
+        /// <param name="size">sets the size of the Npc-Rectangle</param>
+        /// <param name="startingPosition">where the Npc is being creates</param>
         public Npc(string name, int id, Vector2f size, Vector2f startingPosition, Quest quest)
         {
             this.name = name;
@@ -57,12 +57,12 @@ namespace FantasyGame
         }
 
         /// <summary>
-        /// creates a bastard to play with
+        /// creates a non-playable bastard to play with
         /// </summary>
         /// <param name="name">name of the dude (derp)</param>
         /// <param name="id">id (not sure what for)</param>
-        /// <param name="size">sets the size of the player-Rectangle</param>
-        /// <param name="startingPosition">where the player is being creates</param>
+        /// <param name="size">sets the size of the Npc-Rectangle</param>
+        /// <param name="startingPosition">where the Npc is being creates</param>
         public Npc(string name, int id, Vector2f size, Vector2f startingPosition)
         {
             this.name = name;
@@ -78,7 +78,7 @@ namespace FantasyGame
         /// <summary>
         /// Updates the Input, Movement, Collisions and Animations
         /// </summary>
-        /// <param name="collisions">takes the rectangles the player can collide with</param>
+        /// <param name="collisions">takes the rectangles the Npc can collide with</param>
         public void Update(List<FloatRect> collisions)
         {
             Movement();
@@ -87,7 +87,7 @@ namespace FantasyGame
         }
 
         /// <summary>
-        /// Returns a Vector at the Center of the players mask
+        /// Returns a Vector at the Center of the Npc mask
         /// </summary>
         public Vector2f Position()
         {
@@ -98,7 +98,7 @@ namespace FantasyGame
         /// Creates an animation to Draw
         /// </summary>
         /// <param name="animationID">id that is used to load the correct animation</param>
-        /// <param name="spriteMapName">name of the player-spritemap</param>
+        /// <param name="spriteMapName">name of the Npc-spritemap</param>
         /// <param name="spriteAmount">how many sprites in Y-Direction the animation has on the tileset</param>
         /// <param name="frameAmount">how many frames it takes for the animation to complete</param>
         /// <param name="column">column of the wanted animation on the tileset, beginning at 1</param>
@@ -108,7 +108,7 @@ namespace FantasyGame
         }
 
         /// <summary>
-        /// stops animation if player doesn't move and updates the position of the current animation
+        /// stops animation if Npc doesn't move and updates the position of the current animation
         /// </summary>
         private void UpdateAnimation()
         {
@@ -137,9 +137,9 @@ namespace FantasyGame
         }
 
         /// <summary>
-        /// stops the player if he was about to collide with a collidable tile.
+        /// stops the Npc if he was about to collide with a collidable tile.
         /// </summary>
-        /// <param name="collisions">lust of rectangles the player can collide with</param>
+        /// <param name="collisions">list of rectangles the Npc can collide with</param>
         private void CheckCollision(List<FloatRect> collisions)
         {
             if (CollisionMethods.CheckCollision(collisions, new FloatRect(new Vector2f(mask.Left, targetMask.Top), new Vector2f(targetMask.Width, targetMask.Height))))
@@ -153,7 +153,7 @@ namespace FantasyGame
         }
 
         /// <summary>
-        /// Slows player down if he goes to fast and creates a targetmask out of position and velocity
+        /// Slows Npc down if he goes to fast and creates a targetmask out of position and velocity
         /// </summary>
         private void Movement()
         {
@@ -180,6 +180,10 @@ namespace FantasyGame
                 targetMask.Top += velocity.Y;
         }
 
+        /// <summary>
+        /// Used when Player interacts with the Npc. If Quest hasn't been accepted yet, the player gets a Quest. Used the Update the Quest.
+        /// </summary>
+        /// <param name="inventory">Necessary so the Quest can add/remove collectables from the Inventory once Quest is completed</param>
         public void Interact(Inventory inventory)
         {
             if(questAccepted)
@@ -196,7 +200,7 @@ namespace FantasyGame
         }
 
         /// <summary>
-        /// draws the current animation of the player
+        /// draws the current animation of the Npc
         /// </summary>
         /// <param name="window">window of the main-program</param>
         public void Draw(RenderWindow window)

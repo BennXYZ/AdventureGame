@@ -16,6 +16,10 @@ namespace FantasyGame
     {
         public static List<Quest> currentQuests;  //List of currently Active Quests
 
+        /// <summary>
+        /// Remove a specific Quest from the List of currently Active Quests (currentQuests)
+        /// </summary>
+        /// <param name="name">name of the Quest to be removed</param>
         public static void removeQuest(string name)
         {
             for(int i = 0; i < currentQuests.Count; i++)
@@ -28,6 +32,11 @@ namespace FantasyGame
             }
         }
 
+        /// <summary>
+        /// Does things so that the Quests work : ^)
+        /// </summary>
+        /// <param name="name">name of the Quest that is to be checked</param>
+        /// <param name="inventory">Inventory. Necessary so that the Quest can add/remove Items from the Inventory</param>
         public static void CheckQuest(string name, Inventory inventory)
         {
             if (SearchForQuest(name).CheckTask(inventory))
